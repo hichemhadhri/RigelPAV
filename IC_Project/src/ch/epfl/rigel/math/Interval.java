@@ -2,8 +2,9 @@ package ch.epfl.rigel.math;
 
 /**
  * @author Mohamed Hichem Hadhri (300434)
- *
+ * @author Khalil Haroun Achache (300350)
  */
+
 public abstract class Interval {
     
     private final double  borneMin , borneMax ; 

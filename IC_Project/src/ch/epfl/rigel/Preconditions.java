@@ -2,11 +2,11 @@ package ch.epfl.rigel;
 
 import ch.epfl.rigel.math.Interval;
 
-/**Preconditons class
- * 
+/**
  * @author Mohamed Hichem Hadhri (300434)
- *
+ * @author Khalil Haroun Achache (300350)
  */
+
 public final class Preconditions {
     
     private Preconditions() {

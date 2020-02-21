@@ -3,11 +3,10 @@ package ch.epfl.rigel.math;
 import java.util.Locale;
 
 /**
- * RightOpenInterval class extends Interval
- * 
  * @author Mohamed Hichem Hadhri (300434)
- *
+ * @author Khalil Haroun Achache (300350)
  */
+
 public final class RightOpenInterval extends Interval{
 
     private RightOpenInterval(double x, double y ) {

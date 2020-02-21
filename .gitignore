@@ -1,1 +1,11 @@
 .class
+.DS_Store
+.idea/IC_PROJET.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
+IC_Project/.DS_Store
+IC_Project/src/.DS_Store
+IC_Project/src/ch/.DS_Store
+IC_Project/src/ch/epfl/.DS_Store
+IC_Project/src/ch/epfl/rigel/.DS_Store
