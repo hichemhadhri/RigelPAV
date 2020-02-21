@@ -1,0 +1,64 @@
+package ch.epfl.rigel.math;
+
+import java.util.Locale;
+
+/**ClosedInterval Class extends Interval
+ * @author Mohamed Hichem Hadhri (300434)
+ *
+ */
+public final class ClosedInterval extends Interval {
+
+    private ClosedInterval(double x, double y ) {
+        super(x,y); 
+    }
+    
+    
+    /**
+     * Creates a CLosedInterval Object [low, high]
+     * @param low : Minimum head
+     * @param high : Maximum head
+     * @throws :IllegalArgumentException if low=>high
+     * @return : ClosedInterval
+     */
+    public static ClosedInterval of(double low, double high) {
+        if(!(low<high))
+            throw new IllegalArgumentException(); 
+        return new ClosedInterval(low, high); 
+    }
+    
+    /**
+     * Creates a symmetric CLosedInterval Object [-size/2, size/2]
+     * @param size : size of interval
+     * @throws :IllegalArgumentException if size<=0
+     * @return : symmetric ClosedInterval
+     */
+    public static ClosedInterval symmetric(double size) {
+        if(size<=0)
+            throw new IllegalArgumentException(); 
+        
+        return new ClosedInterval(-size/2,size/2);
+    }
+    
+    /**Clip v to the interval
+     * @param v
+     * @return clipped value of v
+     */
+    double clip(double v) {
+        if(v<=super.low())
+            return super.low(); 
+        if(v>=super.high())
+            return super.high(); 
+        
+        return v; 
+    }
+    
+    @Override
+    public boolean contains(double v) {
+        return (v>=super.low() && v<=super.high());
+    }
+    
+    @Override
+    public String toString() {
+        return String.format(Locale.ROOT, "[ %f , %f]", super.low(),super.high()) ;
+    }
+}
