@@ -11,7 +11,7 @@ public final class Angle {
 
     public static final double TAU = 2 * Math.PI;
     private static final double HOURS_PER_RAD = 24.0 / TAU;
-    private static final double RAD_PER_SEC = TAU/(3600.0 * 360);
+    private static final double RAD_PER_SEC = TAU/(3600.0 * 360.0);
 
 
     /**Returns the normalized angle value
@@ -40,7 +40,7 @@ public final class Angle {
     public static double ofDMS(int deg, int min, double sec){
     	if((min<0|| min>=60)|| (sec<0|| sec>=60))
     		throw new IllegalArgumentException();
-        return Math.toRadians(deg+ min/60 + sec/3600);
+        return Math.toRadians(deg+ min/60.0 + sec/3600.0);
     }
 
     /**Returns the angle value in radians corresponding to the given angle in degrees
@@ -64,7 +64,7 @@ public final class Angle {
      * @return double : the angle in radians
      */
     public static double ofHr(double hr){
-        return normalizePositive( hr / HOURS_PER_RAD);
+        return hr / HOURS_PER_RAD;
     }
 
     /**Returns the angle value in hours corresponding to the given angle in radians
@@ -72,7 +72,7 @@ public final class Angle {
      * @return double : the angle in hours
      */
     public static double  toHr(double rad){
-        return normalizePositive(rad) * HOURS_PER_RAD;
+        return rad * HOURS_PER_RAD;
     }
 
 

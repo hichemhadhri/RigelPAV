@@ -38,13 +38,13 @@ public final class Polynomial {
 	}
 	
 	
-    /**Evaluates the polynom at a speciefied value
+    /**Evaluates the polynome at a specified value
      * @param double : value to calculate
      * @return double : evaluation  
      */
 	public double at(double x) {
-		double result = coeffs[coeffs.length-1];
-		for(int i=0 ; i<coeffs.length-1;++i) {
+		double result = coeffs[0];
+		for(int i=1 ; i<coeffs.length;++i) {
 			result = result * x + coeffs[i];
 		}
 		return result;
@@ -56,15 +56,22 @@ public final class Polynomial {
     	for(int i=0;i<coeffs.length;++i) { //Building up the string
     		if(coeffs[i]==0) // No need to print if the coefficient is 0 
     			continue;
-    		if(i!=0)	//Adding the sign symbol
-    			out+= coeffs[i]>0 ? " + ": " - ";
-    		if(Math.abs(coeffs[i])!=1) { //Checking if the number is natural and printing it appropriately
-    			if(coeffs[i]-Math.floor(coeffs[i])==0) 
-    				out+= String.format(Locale.ROOT,"%.0f ", Math.abs(coeffs[i]));
+    		if(i!=0) {
+    			if(coeffs[i]>0)	//Adding the plus symbol
+    				out+="+";
     			else
-    				out+= String.format(Locale.ROOT,"%.2f ", Math.abs(coeffs[i]));		
+        			out+="-";
+    		}
+    		else if(coeffs[i]<0)
+    			out+="-";
+    		if(Math.abs(coeffs[i])!=1) {
+    			if(coeffs[i]-Math.floor(coeffs[i])==0)//Checking if the number is natural and printing it appropriately 
+    				out+= String.format(Locale.ROOT,"%.1f", Math.abs(coeffs[i]));
+    			else
+    				out+= String.format(Locale.ROOT,"%s", Math.abs(coeffs[i]));		
     		} 
-    		if(i!=coeffs.length-1)out +="X^"+(coeffs.length-i-1); // printing the power (except 0)
+    		if(i!=coeffs.length-1)out +="x";
+    		if(i!=coeffs.length-2 && i!=coeffs.length-1) out+="^"+(coeffs.length-i-1); // printing the power (except 0)
 
     	}
         return out;
