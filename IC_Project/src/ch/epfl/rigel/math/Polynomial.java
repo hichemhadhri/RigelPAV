@@ -9,7 +9,7 @@ import java.util.Locale;
 
 public final class Polynomial {
 	
-	private double[] coeffs;
+	private final double[] coeffs;
 	
 	private Polynomial(double coefficientN, double...others) {
 		coeffs= new double [others.length+1];
