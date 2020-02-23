@@ -18,20 +18,20 @@ public abstract class Interval {
     /**Getter for BorneMin
      * @return value of BorneMin
      */
-    double low() {
+   public double low() {
         return borneMin; 
     }
     /**Getter for BorneMax
      * @return value of BorneMax
      */
-    double high() {
+    public double high() {
         return borneMax; 
     }
     
     /**Size of the interval
      * @return size of the interval 
      */
-    double size() {
+    public double size() {
         return borneMax-borneMin ;
     }
     

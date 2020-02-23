@@ -29,7 +29,7 @@ public final class Polynomial {
 	public static Polynomial of(double coefficientN, double... coefficients) {
 		if(coefficientN==0)
 			throw new IllegalArgumentException();
-		//Copying array to ensure immutability
+		//Copying array to ensure immuability
 		double [] others = new double [coefficients.length]; 
 		for(int i=0;i<coefficients.length;++i) {
 			others[i]=coefficients[i];

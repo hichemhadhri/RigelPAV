@@ -7,7 +7,7 @@ import ch.epfl.rigel.math.Angle;
  * @author Khalil Haroun Achache (300350)
  */
 
-class SphericalCoordinates {
+abstract class SphericalCoordinates {
 	private final double latitude;
 	private final double longtitude;
 	

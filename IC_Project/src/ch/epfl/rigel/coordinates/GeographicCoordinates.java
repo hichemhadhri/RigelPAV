@@ -3,7 +3,10 @@ package ch.epfl.rigel.coordinates;
 import java.util.Locale;
 
 import ch.epfl.rigel.math.Angle;
-
+/**
+ * @author Mohamed Hichem Hadhri (300434)
+ * @author Khalil Haroun Achache (300350)
+ */
 public final class GeographicCoordinates extends SphericalCoordinates {
 	
 	
@@ -12,7 +15,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
 		super(longtitude,latitude);
 	}
 	
-	GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
+	public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
 		if(!isValidLatDeg(latDeg)||!isValidLonDeg(lonDeg))
 			throw new IllegalArgumentException();
 		return new GeographicCoordinates(Angle.ofDeg(lonDeg),Angle.ofDeg(latDeg));
