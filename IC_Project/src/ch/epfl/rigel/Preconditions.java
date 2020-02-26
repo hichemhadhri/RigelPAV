@@ -9,6 +9,7 @@ import ch.epfl.rigel.math.Interval;
 
 public final class Preconditions {
     
+   
     private Preconditions() {
         
     }

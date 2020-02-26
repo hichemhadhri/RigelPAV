@@ -9,6 +9,7 @@ import java.util.Locale;
 
 public final class ClosedInterval extends Interval {
 
+    
     private ClosedInterval(double x, double y ) {
         super(x,y); 
     }

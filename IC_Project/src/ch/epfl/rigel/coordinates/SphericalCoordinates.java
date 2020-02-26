@@ -17,17 +17,29 @@ abstract class SphericalCoordinates {
 		
 	}
 	
+	/**getter for longitude in radian 
+	 * @return longitude in radian 
+	 */
 	double lon() {
 		return longtitude;
 	}
 	
+	/**getter for latitude in radian 
+	 * @return latitude in radian 
+	 */
 	double lat() {
 		return latitude;
 	}
 	
+	/**Getter for longitude in degrees
+	 * @return longitude in degrees
+	 */
 	double lonDeg() {
 		return Angle.toDeg(longtitude);
 	}
+	/**Getter for latitude in degrees 
+	 * @return latitude in degrees
+	 */
 	double latDeg() {
 		return Angle.toDeg(latitude);
 	}

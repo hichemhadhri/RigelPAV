@@ -69,6 +69,7 @@ class PolynomialTest {
     @Test
     void toStringWorksOnKnownPolynomials() {
         var polynomial1 = Polynomial.of(5.999999);
+        System.out.println(polynomial1.toString());
         assertEquals("5.999999", polynomial1.toString());
         var polynomial2 = Polynomial.of(-3.14);
         assertEquals("-3.14", polynomial2.toString());
@@ -84,6 +85,7 @@ class PolynomialTest {
         assertEquals("x^3-6.0x^2-10.0", polynomial7.toString());
         var polynomial8 = Polynomial.of(-2, 6, 2, -6);
         assertEquals("-2.0x^3+6.0x^2+2.0x-6.0", polynomial8.toString());
+       System.out.println(polynomial8.toString());
     }
 
     @Test

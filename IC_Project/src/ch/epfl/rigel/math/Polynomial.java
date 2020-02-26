@@ -1,6 +1,5 @@
 package ch.epfl.rigel.math;
 
-import java.util.Locale;
 
 /**
  * @author Mohamed Hichem Hadhri (300434)
@@ -14,31 +13,25 @@ public final class Polynomial {
 	private Polynomial(double coefficientN, double...others) {
 		coeffs= new double [others.length+1];
 		coeffs[0]=coefficientN;
-		for(int i = 0; i<others.length; ++i) {
-			coeffs[i+1]=others[i];
-		}
+		System.arraycopy(others, 0, coeffs, 1, others.length);
 		
 	}
     /**
-     * Creates a polynome [-size/2,size/2[
-     * @param double : highest degree coeficient
-     * * @param double... : other coefficients
-     * @throws :IllegalArgumentException if highest degree coefficient is 0
-     * @return polynome
+     * Creates a polynom [-size/2,size/2[
+     * @param   highest degree coeficient
+     * * @param  other coefficients
+     * @throws IllegalArgumentException if highest degree coefficient is 0
+     * @return polynom
      */
 	public static Polynomial of(double coefficientN, double... coefficients) {
 		if(coefficientN==0)
 			throw new IllegalArgumentException();
-		//Copying array to ensure immuability
-		double [] others = new double [coefficients.length]; 
-		for(int i=0;i<coefficients.length;++i) {
-			others[i]=coefficients[i];
-		}
-		return new Polynomial(coefficientN,others);
+	  
+		return new Polynomial(coefficientN,coefficients);
 	}
 	
 	
-    /**Evaluates the polynome at a specified value
+    /**Evaluates the polynom at a specified value
      * @param double : value to calculate
      * @return double : evaluation  
      */
@@ -52,29 +45,40 @@ public final class Polynomial {
 	
     @Override
     public String toString() {
-    	String out="";
-    	for(int i=0;i<coeffs.length;++i) { //Building up the string
-    		if(coeffs[i]==0) // No need to print if the coefficient is 0 
-    			continue;
-    		if(i!=0) {
-    			if(coeffs[i]>0)	//Adding the plus symbol
-    				out+="+";
-    			else
-        			out+="-";
-    		}
-    		else if(coeffs[i]<0)
-    			out+="-";
-    		if(Math.abs(coeffs[i])!=1) {
-    			if(coeffs[i]-Math.floor(coeffs[i])==0)//Checking if the number is natural and printing it appropriately 
-    				out+= String.format(Locale.ROOT,"%.1f", Math.abs(coeffs[i]));
-    			else
-    				out+= String.format(Locale.ROOT,"%s", Math.abs(coeffs[i]));		
-    		} 
-    		if(i!=coeffs.length-1)out +="x";
-    		if(i!=coeffs.length-2 && i!=coeffs.length-1) out+="^"+(coeffs.length-i-1); // printing the power (except 0)
-
-    	}
-        return out;
+        StringBuilder sb = new StringBuilder(); 
+        
+        for(int i =0 ; i<coeffs.length;i++) {
+            if(coeffs[i]==0) 
+                continue; 
+            if(coeffs[i]>0) {
+                sb.append("+");
+               
+            }
+           
+            if(coeffs[i]==-1.0)
+                sb.append("-");
+            
+            if(coeffs[i]!=-1.0&&coeffs[i]!=1.0)
+                sb.append(coeffs[i]);
+            
+             sb.append("x^");
+             
+            if(i==0&&coeffs[i]>0)
+                sb.deleteCharAt(0);
+            if(i==coeffs.length-1)
+            {
+                sb.replace(sb.lastIndexOf("x^"), sb.length(), "");
+                break; 
+            }
+            if(i==coeffs.length-2)
+            {
+                sb.replace(sb.lastIndexOf("^"), sb.length(), "");
+                continue; 
+            }
+            
+            sb.append(coeffs.length-i-1);
+        }
+        return sb.toString() ;   
     }
     
     @Override
