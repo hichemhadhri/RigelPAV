@@ -32,8 +32,8 @@ public final class Polynomial {
 	
 	
     /**Evaluates the polynom at a specified value
-     * @param double : value to calculate
-     * @return double : evaluation  
+     * @param x : value to calculate
+     * @return evaluation  
      */
 	public double at(double x) {
 		double result = coeffs[0];

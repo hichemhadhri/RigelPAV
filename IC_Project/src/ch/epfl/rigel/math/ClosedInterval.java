@@ -42,10 +42,10 @@ public final class ClosedInterval extends Interval {
     }
     
     /**Clip v to the interval
-     * @param v
+     * @param v : value to clip
      * @return clipped value of v
      */
-    double clip(double v) {
+    public double clip(double v) {
         if(v<=super.low())
             return super.low(); 
         if(v>=super.high())
