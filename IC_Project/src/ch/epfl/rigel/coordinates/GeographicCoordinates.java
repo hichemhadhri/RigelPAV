@@ -10,6 +10,8 @@ import ch.epfl.rigel.math.RightOpenInterval;
 
 
 /**
+ * GeographicCoordinates: 
+ * longitude , latitude
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  */

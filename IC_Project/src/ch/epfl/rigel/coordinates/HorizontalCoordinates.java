@@ -9,6 +9,8 @@ import ch.epfl.rigel.math.Interval;
 import ch.epfl.rigel.math.RightOpenInterval;
 
 /**
+ * HorizontalCoordinates: 
+ * right azimuth , altitude
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  */

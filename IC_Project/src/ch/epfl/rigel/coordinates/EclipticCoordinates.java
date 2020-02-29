@@ -8,6 +8,8 @@ import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.Interval;
 import ch.epfl.rigel.math.RightOpenInterval;
 /**
+ * Ecliptic coordinates:
+ * longtitude , latitude
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  */

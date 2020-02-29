@@ -9,6 +9,8 @@ import ch.epfl.rigel.math.Interval;
 import ch.epfl.rigel.math.RightOpenInterval;
 
 /**
+ * EquatorialCoordinates: 
+ * right ascension , declination
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  */
