@@ -1,6 +1,8 @@
 package ch.epfl.rigel.coordinates;
 
 import java.util.Locale;
+
+import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.Interval;
@@ -25,8 +27,8 @@ public final class GeographicCoordinates extends SphericalCoordinates {
 	 * @return new GeographicCorrdinates object
 	 */
 	public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
-		if(!isValidLatDeg(latDeg)||!isValidLonDeg(lonDeg))
-			throw new IllegalArgumentException();
+	    Preconditions.checkInInterval(lonInterval, lonDeg);
+        Preconditions.checkInInterval(latInterval, latDeg);
 		return new GeographicCoordinates(Angle.ofDeg(lonDeg),Angle.ofDeg(latDeg));
 	}
 	

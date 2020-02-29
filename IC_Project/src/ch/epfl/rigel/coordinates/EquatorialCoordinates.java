@@ -2,6 +2,7 @@ package ch.epfl.rigel.coordinates;
 
 import java.util.Locale;
 
+import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.Interval;
@@ -19,22 +20,22 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
     }
     
     /**
-     * @param ra : right ascention value
+     * @param ra : right ascension value
      * @param dec : declination value
      * @return EclipticCoordinates Object
      * @throws IllegalArgumentException if ra or dec are false
      */
     public static EquatorialCoordinates of(double ra, double dec) {
-        if(!raInterval.contains(ra) || !decInterval.contains(dec))
-            throw new IllegalArgumentException();
+        Preconditions.checkInInterval(raInterval, ra);
+        Preconditions.checkInInterval(decInterval, dec);
         return new EquatorialCoordinates(ra,dec);
     }
     
    
     
     
-    /**Getter for right ascention in radian 
-     * @return right ascention in radian
+    /**Getter for right ascension in radian 
+     * @return right ascension in radian
      */
     public double ra() {
         return super.lon();
@@ -45,14 +46,14 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
     public double dec() {
         return super.lat();
     }
-    /**Getter for right ascention in degrees 
-     * @return right ascention in degrees
+    /**Getter for right ascension in degrees 
+     * @return right ascension in degrees
      */
     public double raDeg() {
         return super.lonDeg();
     }
-    /**Getter for right ascention in Hours 
-     * @return right ascention in hours
+    /**Getter for right ascension in Hours 
+     * @return right ascension in hours
      */
     public double raHr() {
         return Angle.toHr(super.lon());

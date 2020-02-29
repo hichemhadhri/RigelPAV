@@ -18,6 +18,7 @@ public final class RightOpenInterval extends Interval{
      * Creates a RightOpenInterval Object [low, high[
      * @param low : Minimum head
      * @param high : Maximum head
+     * @throws IllegalArgumentException if low>high
      * @return : RightOpenInterval
      */
     public static RightOpenInterval of(double low, double high) {

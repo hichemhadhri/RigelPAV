@@ -2,6 +2,7 @@ package ch.epfl.rigel.coordinates;
 
 import java.util.Locale;
 
+import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.Interval;
@@ -25,8 +26,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	 * @return a HorziontalCoordinates Object
 	 */
 	public static HorizontalCoordinates of(double az, double alt) {
-		if(!azInterval.contains(az) || !altInterval.contains(alt))
-			throw new IllegalArgumentException();
+	    Preconditions.checkInInterval(azInterval, az);
+        Preconditions.checkInInterval(altInterval, alt);
 		return new HorizontalCoordinates(az,alt);
 	}
 	
@@ -37,8 +38,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return a HorziontalCoordinates Object
      */
 	public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
-		if(azDeg<0 || azDeg >= 360 || altDeg>90 || altDeg<-90)
-			throw new IllegalArgumentException();
+	    Preconditions.checkInInterval(azInterval, Angle.ofDeg(azDeg));
+        Preconditions.checkInInterval(altInterval, Angle.ofDeg(altDeg));
 		return new HorizontalCoordinates(Angle.ofDeg(azDeg),Angle.ofDeg(altDeg));
 	}
 	

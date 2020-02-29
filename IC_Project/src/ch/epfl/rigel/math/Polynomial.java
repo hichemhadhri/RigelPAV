@@ -18,7 +18,7 @@ public final class Polynomial {
 	}
     /**
      * Creates a polynom [-size/2,size/2[
-     * @param   highest degree coeficient
+     * @param   highest degree coefficient
      * * @param  other coefficients
      * @throws IllegalArgumentException if highest degree coefficient is 0
      * @return polynom

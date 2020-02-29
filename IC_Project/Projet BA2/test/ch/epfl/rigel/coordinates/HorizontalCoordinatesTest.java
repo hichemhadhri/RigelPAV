@@ -50,6 +50,8 @@ public class HorizontalCoordinatesTest {
         assertThrows(IllegalArgumentException.class, () -> {
             HorizontalCoordinates.ofDeg(360, 0);
         });
+        
+        
 
     }
 
