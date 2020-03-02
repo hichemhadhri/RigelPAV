@@ -20,15 +20,14 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
 	private final double cosEclipObliq;
 	private final double sinEclipObliq;
 	private final double eclipObliq;
-	private final double firstCoeff = Angle.ofArcsec(0.00181);
-	private final double [] coeffs = {-Angle.ofArcsec(0.0006),-Angle.ofArcsec(46.815), Angle.ofDMS(23, 26, 21.45)};
+	private final static Polynomial polynom = Polynomial.of(Angle.ofArcsec(0.00181),-Angle.ofArcsec(0.0006),-Angle.ofArcsec(46.815), Angle.ofDMS(23, 26, 21.45));
 	
 	/**
 	 * EclipticToEquatorialConversion constructor
 	 * @param ZonedDateTime: the zoned date time reference
 	 */
 	public EclipticToEquatorialConversion (ZonedDateTime when) {
-		eclipObliq =Polynomial.of(firstCoeff,coeffs).at(Epoch.J2000.julianCenturiesUntil(when));
+		eclipObliq =polynom.at(Epoch.J2000.julianCenturiesUntil(when));
 		System.out.println(Angle.toDeg(eclipObliq));
 		cosEclipObliq=Math.cos(eclipObliq);
 		sinEclipObliq=Math.cos(eclipObliq);

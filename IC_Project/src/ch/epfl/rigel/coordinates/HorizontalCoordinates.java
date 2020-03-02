@@ -79,7 +79,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	 */
 	public String azOctantName(String n, String e, String s, String w) {
 		String out="";
-		if(azDeg()>292.5 || azDeg()<76.5)
+		if(azDeg()>292.5 || azDeg()<67.5)
 			out+=n;
 		else if(azDeg()>112.5 && azDeg()<247.5)
 			out+=s;
