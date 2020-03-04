@@ -20,7 +20,7 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
 	private final double cosEclipObliq;
 	private final double sinEclipObliq;
 	private final double eclipObliq;
-	private final static Polynomial polynom = Polynomial.of(Angle.ofArcsec(0.00181),-Angle.ofArcsec(0.0006),-Angle.ofArcsec(46.815), Angle.ofDMS(23, 26, 21.45));
+	private final static Polynomial polynom = Polynomial.of(Angle.ofDMS(0, 0,0.00181),-Angle.ofDMS(0, 0,0.0006),-Angle.ofDMS(0, 0,46.815), Angle.ofDMS(23, 26, 21.45));
 	
 	/**
 	 * EclipticToEquatorialConversion constructor
