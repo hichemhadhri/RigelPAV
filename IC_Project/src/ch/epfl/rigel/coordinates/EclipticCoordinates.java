@@ -25,7 +25,7 @@ public final  class EclipticCoordinates extends SphericalCoordinates {
      * @param lon : longitude value
      * @param lat : latitude value
      * @return EclipticCoordinates Object
-     * @throws IllegalArgumentException if lon or lat are false
+     * @throws IllegalArgumentException if lon is not in [0, 2pi[  or lat is not in [-pi/2 , pi/2]
      */
     public static EclipticCoordinates of(double lon, double lat) {
         Preconditions.checkInInterval(lonInterval, lon);

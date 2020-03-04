@@ -28,9 +28,8 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
 	 */
 	public EclipticToEquatorialConversion (ZonedDateTime when) {
 		eclipObliq =polynom.at(Epoch.J2000.julianCenturiesUntil(when));
-		System.out.println(Angle.toDeg(eclipObliq));
 		cosEclipObliq=Math.cos(eclipObliq);
-		sinEclipObliq=Math.cos(eclipObliq);
+		sinEclipObliq=Math.sin(eclipObliq);
 	}
 
 	/**
@@ -40,7 +39,7 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
 	 */
 	@Override
 	public EquatorialCoordinates apply(EclipticCoordinates ecl) {
-		return EquatorialCoordinates.of(getAlpha(ecl),getDelta(ecl));
+		return EquatorialCoordinates.of(Angle.normalizePositive(getAlpha(ecl)),getDelta(ecl));
 	}
 	
     @Override
@@ -60,7 +59,8 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
     }
     
     private double getDelta(EclipticCoordinates ecl) {
-    	return Math.asin( Math.sin(ecl.lat()) * cosEclipObliq - Math.sin(ecl.lon()) * sinEclipObliq* Math.cos(ecl.lat()) );
+    	
+    	return Math.asin( Math.sin(ecl.lat()) * cosEclipObliq + Math.sin(ecl.lon()) * sinEclipObliq* Math.cos(ecl.lat()) );
     }
 
 

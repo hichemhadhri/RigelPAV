@@ -25,7 +25,7 @@ public final class EquatorialCoordinates extends SphericalCoordinates {
      * @param ra : right ascension value
      * @param dec : declination value
      * @return EclipticCoordinates Object
-     * @throws IllegalArgumentException if ra or dec are false
+     * @throws IllegalArgumentException if ra is not in [0, 2pi[  or dec is not in [-pi/2 , pi/2]
      */
     public static EquatorialCoordinates of(double ra, double dec) {
         Preconditions.checkInInterval(raInterval, ra);

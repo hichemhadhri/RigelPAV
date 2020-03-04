@@ -4,6 +4,7 @@ import java.time.ZonedDateTime;
 import java.util.function.Function;
 
 import ch.epfl.rigel.astronomy.SiderealTime;
+import ch.epfl.rigel.math.Angle;
 
 /**
  * Equatorial to Horizontal coordinates converter
@@ -39,13 +40,13 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
 	public HorizontalCoordinates apply(EquatorialCoordinates equ) {
 		double dec = equ.dec();
 		double angularHour = getAngularHour(equ.ra());
-		double h = getAlt(angularHour,angularHour);
-		return HorizontalCoordinates.of(getAz(dec,h,angularHour), h);
+		double h = getAlt(dec,angularHour);
+		return HorizontalCoordinates.of(Angle.normalizePositive(getAz(dec,h,angularHour)), h);
 	}
 	
 	private double getAz(double dec , double h, double H) {
 		return Math.atan2( -Math.cos(dec) * cosPhi * Math.sin(H),
-			   Math.sin(dec) - sinPhi * h );
+			   Math.sin(dec) - sinPhi * Math.sin(h) );
 	}
 	
 	private double getAlt(double dec, double H) {

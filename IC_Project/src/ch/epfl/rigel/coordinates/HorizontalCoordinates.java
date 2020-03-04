@@ -36,7 +36,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	/**Creates a HorizontalCoordinates Object from the given azimuth and altitude in degrees
      * @param az : azimuth in degrees
      * @param alt : altitude in degrees
-     * @throws IllegalArgumentException if az or alt are not valid
+     * @throws IllegalArgumentException if az is not in [0,TAU[ or alt is not in [-pi/2 , pi/2]
      * @return a HorziontalCoordinates Object
      */
 	public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {

@@ -25,7 +25,7 @@ public final class GeographicCoordinates extends SphericalCoordinates {
 	/**Creates a GeographicCoordinates object from the given lonDeg and latDeg
 	 * @param lonDeg : longitude in degrees
 	 * @param latDeg : latitude in degrees
-	 * @throws IllegalArgumentException if lonDeg or latDeg is not valid
+	 * @throws IllegalArgumentException if lon is not in [-180, 180[  or lat is not in [-90 , 90]
 	 * @return new GeographicCorrdinates object
 	 */
 	public static GeographicCoordinates ofDeg(double lonDeg, double latDeg) {
