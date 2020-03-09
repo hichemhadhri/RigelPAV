@@ -27,9 +27,8 @@ public final class SiderealTime {
      * @return greenwich sidereal time 
      */
     public static double greenwich(ZonedDateTime when) {
-        ZonedDateTime wg = when.truncatedTo(ChronoUnit.DAYS);
+        ZonedDateTime wg = when.withZoneSameInstant(ZoneOffset.UTC).truncatedTo(ChronoUnit.DAYS);
         double julDiff=Epoch.J2000.julianCenturiesUntil(wg);
-      //  System.out.println(julDiff);
         double hourDiff=-when.withZoneSameInstant(ZoneOffset.UTC).until(wg, ChronoUnit.MILLIS)/3.6e+6;
         double s0 = s0p.at(julDiff);
         double s1 = s1p.at(hourDiff);

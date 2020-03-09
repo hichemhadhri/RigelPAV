@@ -41,12 +41,22 @@ public final class EquatorialToHorizontalConversion implements Function<Equatori
 		double dec = equ.dec();
 		double angularHour = getAngularHour(equ.ra());
 		double h = getAlt(dec,angularHour);
-		return HorizontalCoordinates.of(Angle.normalizePositive(getAz(dec,h,angularHour)), h);
+		return HorizontalCoordinates.of(getAz(dec,h,angularHour), h);
 	}
 	
+    @Override
+    public final int hashCode() {
+        throw new UnsupportedOperationException(); 
+    }
+    
+    @Override
+    public final boolean equals(Object obj) {
+        throw new UnsupportedOperationException(); 
+    }
+	
 	private double getAz(double dec , double h, double H) {
-		return Math.atan2( -Math.cos(dec) * cosPhi * Math.sin(H),
-			   Math.sin(dec) - sinPhi * Math.sin(h) );
+		return Angle.normalizePositive(Math.atan2( -Math.cos(dec) * cosPhi * Math.sin(H),
+			   Math.sin(dec) - sinPhi * Math.sin(h) ));
 	}
 	
 	private double getAlt(double dec, double H) {
