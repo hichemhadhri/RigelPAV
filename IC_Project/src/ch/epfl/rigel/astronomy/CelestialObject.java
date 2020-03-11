@@ -9,7 +9,7 @@ import ch.epfl.rigel.coordinates.EquatorialCoordinates;
  * @author Khalil Haroun Achache (300350)
  * CelestialObject class
  */
-public abstract class CelestialObject {
+public  class CelestialObject {
 	
 	private final String name;
 	private final EquatorialCoordinates equatorialPos;
@@ -26,7 +26,7 @@ public abstract class CelestialObject {
 	 * @throw IllegalArgumentException: if angularSize <0
 	 * @throw NullPointerException: if equatorialPos or name is null
 	 */
-	CelestialObject(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude){
+	public CelestialObject(String name, EquatorialCoordinates equatorialPos, float angularSize, float magnitude){
 		if(angularSize<0)
 			throw new IllegalArgumentException();
 		this.name = Objects.requireNonNull(name, "Name cannot be null");

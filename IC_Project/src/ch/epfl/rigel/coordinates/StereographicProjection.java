@@ -22,7 +22,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     }
     
     public double circleRadiusForParallel(HorizontalCoordinates parallel) {
-        return Math.sin(parallel.alt())/(sinC+Math.sin(parallel.alt())); 
+        return Math.cos(parallel.alt())/(sinC+Math.sin(parallel.alt())); 
     }
     
     double applyToAngle(double rad) {
@@ -34,7 +34,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
         double cosD = Math.cos(azAlt.az()-alpha); 
         double sinD = Math.sin(azAlt.az()-alpha);
         double cosA=Math.cos(azAlt.alt());
-        double sinA = Math.asin(azAlt.alt()); 
+        double sinA = Math.sin(azAlt.alt()); 
         double d =1/(1+Math.sin(azAlt.alt())*sinC+Math.cos(azAlt.alt())*cosC*cosD);
         return CartesianCoordinates.of(d*cosA*sinD,d*(sinA*cosC-cosA*sinC*cosD)) ; 
     }

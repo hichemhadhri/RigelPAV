@@ -1,5 +1,7 @@
 package ch.epfl.rigel.astronomy;
 
+import java.util.Locale;
+
 import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import ch.epfl.rigel.math.ClosedInterval;
@@ -26,7 +28,7 @@ public final class Moon extends CelestialObject{
 	
 	@Override
 	public String info() {
-		return String.format(super.info()+" ("+.1f+"%)", phase*100); 
+		return String.format(Locale.ROOT,"%s (%.1f%%)",super.info(), phase*100); 
 	}
 	
 
