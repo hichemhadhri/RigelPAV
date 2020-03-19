@@ -45,7 +45,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @param rad : angular size of the sphere
      * @return diameter
      */
-    double applyToAngle(double rad) {
+    public double applyToAngle(double rad) {
         return 2*Math.tan(rad/4); 
     }
     
