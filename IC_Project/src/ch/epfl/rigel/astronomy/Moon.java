@@ -15,7 +15,7 @@ public final class Moon extends CelestialObject{
 	private final static String defaultName = "Lune";
 	private final float phase;
 	
-	/**
+	/**Moon Constructor
 	 * @param equatorialPos
 	 * @param angularSize
 	 * @param magnitude

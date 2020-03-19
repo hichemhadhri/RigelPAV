@@ -60,14 +60,7 @@ class MyStereographicProjectionTest {
         System.out.println(z);
     }
     
-    
-    @Test
-    void CelestialObject(){
-        CelestialObject celestial = new CelestialObject("Arion", EquatorialCoordinates.of(Angle.ofDeg(55.8),
-                Angle.ofDeg(19.7)), 0.4f, 1.2f);
-        assertEquals("Arion", celestial.info());
-        assertEquals("Arion", celestial.name());
-    }
+ 
 
     @Test
     void moonTest(){
