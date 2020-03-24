@@ -143,7 +143,6 @@ class StereographicProjectionTest {
                 var altDeg = rng.nextDouble(-90, 90);
                 var hor = HorizontalCoordinates.ofDeg(azDeg, altDeg);
                 var car = proj.apply(hor);
-                System.out.println(car);
                 var hor2 = proj.inverseApply(car);
                 assertEquals(hor.azDeg(), hor2.azDeg(), 1e-8);
                 assertEquals(hor.altDeg(), hor2.altDeg(), 1e-8);
