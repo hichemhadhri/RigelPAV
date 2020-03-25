@@ -19,7 +19,7 @@ public final class Star extends CelestialObject{
 		this.hipparcosId=hipparcosId;
 		this.colorTemperature= (int)(4600 * (1/(0.92f*colorIndex+1.7f) + 1/(0.92f*colorIndex+0.62f)));//Calculating the color temperature once and for all
 	}
-	
+
 	public int hipparcosId() {
 		return hipparcosId;
 	}

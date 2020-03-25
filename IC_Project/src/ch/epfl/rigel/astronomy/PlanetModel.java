@@ -1,5 +1,8 @@
 package ch.epfl.rigel.astronomy;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.epfl.rigel.coordinates.EclipticCoordinates;
 import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
@@ -27,6 +30,8 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	       19.21814, 0.773059, 73.926961, 65.80, -7.19),
 	NEPTUNE("Neptune", 165.84539, 326.895127, 23.07, 0.010483,
 	        30.1985, 1.7673, 131.879, 62.20, -6.87);
+    
+    public static final List<PlanetModel> ALL=List.of(PlanetModel.MERCURY,PlanetModel.VENUS,PlanetModel.EARTH,PlanetModel.MARS,PlanetModel.JUPITER,PlanetModel.SATURN,PlanetModel.URANUS,PlanetModel.NEPTUNE);
 	private final static double EARTH_TROPICAL_YEAR = 365.242191;
 	private final String name;
 	private final double tropicalYear;
