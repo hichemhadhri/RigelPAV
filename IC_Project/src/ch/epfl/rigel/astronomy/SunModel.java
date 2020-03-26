@@ -25,13 +25,13 @@ public enum SunModel implements CelestialObjectModel<Sun> {
 	public Sun at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
 		double meanAnomaly = getMeanAnomaly(daysSinceJ2010);
 		double trueAnomaly = getTrueAnomaly(meanAnomaly);
-		System.out.println(Angle.toDeg(Angle.normalizePositive(trueAnomaly)));
+		
 		double longitudeRad = getEclipticLongitude(trueAnomaly);
 		EclipticCoordinates ecliptCoord = EclipticCoordinates.of(Angle.normalizePositive(longitudeRad), 0);
 		EquatorialCoordinates equaCoord = eclipticToEquatorialConversion.apply(ecliptCoord);
-		System.out.println(ecliptCoord);
-		double angularSize = getAngularSize(Angle.normalizePositive(trueAnomaly));
-		System.out.println(angularSize);
+		
+		double angularSize = getAngularSize(trueAnomaly);
+	System.out.println((float)angularSize);
 		return new Sun(ecliptCoord,equaCoord,(float)angularSize, (float)meanAnomaly);
 	}
 	private double getMeanAnomaly(double D) {
