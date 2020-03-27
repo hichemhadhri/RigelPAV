@@ -1,13 +1,15 @@
 package ch.epfl.rigel.astronomy;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.Month;
-import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
@@ -79,5 +81,115 @@ class MySunModelTest {
                            LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC)))
                            
            .equatorialPos().decDeg(),1e-10);
+   }
+   
+   @Test
+   void atWorks() {
+       EclipticToEquatorialConversion system = new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of(2003, Month.JULY, 27),
+               LocalTime.of(0, 0),
+               ZoneOffset.UTC));
+       Sun sun = SunModel.SUN.at(Epoch.J2010.daysUntil(ZonedDateTime.of(LocalDate.of(2003, Month.JULY, 27),
+               LocalTime.of(0, 0),
+               ZoneOffset.UTC)),
+               system);
+     //  assertEquals(123.58060053153336, sun.eclipticPos().lonDeg());
+       assertEquals(0, sun.eclipticPos().latDeg());
+       assertEquals(system.apply(sun.eclipticPos()).raDeg(), sun.equatorialPos().raDeg());
+       assertEquals(system.apply(sun.eclipticPos()).decDeg(), sun.equatorialPos().decDeg());
+   }
+   
+   
+   @Test
+   void at() {
+       assertEquals(5.9325494700300885,
+       SunModel.SUN.at(27 + 31, new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of
+               (2010,  Month.FEBRUARY, 27),LocalTime.of(0,0), ZoneOffset.UTC))).equatorialPos().ra());
+       assertEquals(8.3926828082978,
+       SunModel.SUN.at(-2349, new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of
+               (2003, Month.JULY, 27), LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC))).equatorialPos().raHr(),
+               1e-10);
+       assertEquals(19.35288373097352,
+       SunModel.SUN.at(-2349, new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of
+               (2003, Month.JULY, 27), LocalTime.of(0, 0, 0, 0), ZoneOffset.UTC))).equatorialPos().decDeg());
+   }
+
+   @Test
+   void atWorks2() {
+       EclipticToEquatorialConversion system = new EclipticToEquatorialConversion(ZonedDateTime.of(LocalDate.of(2003, Month.JULY, 27),
+               LocalTime.of(0, 0),
+               ZoneOffset.UTC));
+       Sun sun = SunModel.SUN.at(Epoch.J2010.daysUntil(ZonedDateTime.of(LocalDate.of(2003, Month.JULY, 27),
+               LocalTime.of(0, 0),
+               ZoneOffset.UTC)),
+               system);
+       assertEquals(123.58060053153336, sun.eclipticPos().lonDeg());
+       assertEquals(0, sun.eclipticPos().latDeg());
+       assertEquals(system.apply(sun.eclipticPos()).raDeg(), sun.equatorialPos().raDeg());
+       assertEquals(system.apply(sun.eclipticPos()).decDeg(), sun.equatorialPos().decDeg());
+   }
+
+   @Test
+   void asterismThrowsException() {
+       List<Star> stars = new ArrayList();
+       assertThrows(IllegalArgumentException.class, () -> new Asterism(stars));
+   }
+
+   @Test
+   void starsWorks() {
+       List<Star> stars = new ArrayList();
+       stars.add(new Star(1, "star", EquatorialCoordinates.of(0, 0), 1, 0));
+       assertEquals(1, new Asterism(stars).stars().get(0).hipparcosId());
+       assertEquals(0, new Asterism(stars).stars().get(0).angularSize());
+       assertEquals(1, new Asterism(stars).stars().get(0).magnitude());
+       assertEquals("star", new Asterism(stars).stars().get(0).name());
+   }
+   @Test
+   void constructorThrowsException() {
+       assertThrows(IllegalArgumentException.class, () -> new Star(-1,
+               "name",
+               EquatorialCoordinates.of(0,0),
+               1,
+               0));
+       assertThrows(IllegalArgumentException.class, () -> new Star(1,
+               "name",
+               EquatorialCoordinates.of(0,0),
+               1,
+               -1));
+       assertThrows(NullPointerException.class, () -> new Star(1,
+               null,
+               EquatorialCoordinates.of(0,0),
+               1,
+               0));
+       assertThrows(NullPointerException.class, () -> new Star(1,
+               "name",
+               null,
+               1,
+               0));
+   }
+
+   @Test
+   void hipparcosIdWorks() {
+       assertEquals(1, new Star(1,
+               "name",
+               EquatorialCoordinates.of(0,0),
+               1,
+               0)
+               .hipparcosId());
+   }
+
+   @Test
+   void colorTemperatureWorks() {
+       assertEquals(10125 ,new Star(1,
+               "name",
+               EquatorialCoordinates.of(0,0),
+               1,
+               0)
+               .colorTemperature());
+       assertEquals(3169 ,new Star(1,
+               "name",
+               EquatorialCoordinates.of(0,0),
+               1,
+               2)
+               .colorTemperature());
    }
 }
