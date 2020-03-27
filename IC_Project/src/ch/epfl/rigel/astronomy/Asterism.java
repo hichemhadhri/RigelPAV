@@ -9,20 +9,22 @@ import ch.epfl.rigel.Preconditions;
  * @author Khalil Haroun Achache (300350)
  *
  */
-//TODO: Check about immuability
 public final class Asterism {
 	
 	private final List<Star> stars;
 	
-	
-	
-	//////No acces modifiers specified( not even package private)
+	/** constructor for Asterism
+	 * @param stars: list of stars
+	 */
 	public Asterism(List<Star> stars){
 		Preconditions.checkArgument(!stars.isEmpty());
 		this.stars=List.copyOf(stars);
 	}
 	
 	
+	/**
+	 * @return stars list of the asterism
+	 */
 	public List<Star> stars(){
 		return stars;
 	}

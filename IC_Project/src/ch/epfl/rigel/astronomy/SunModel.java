@@ -11,7 +11,6 @@ import ch.epfl.rigel.math.Angle;
  * @author Khalil Haroun Achache (300350)
  *
  */
-//TODO: CHECK CAST
 public enum SunModel implements CelestialObjectModel<Sun> {
 	SUN;
 	
@@ -29,9 +28,8 @@ public enum SunModel implements CelestialObjectModel<Sun> {
 		double longitudeRad = getEclipticLongitude(trueAnomaly);
 		EclipticCoordinates ecliptCoord = EclipticCoordinates.of(Angle.normalizePositive(longitudeRad), 0);
 		EquatorialCoordinates equaCoord = eclipticToEquatorialConversion.apply(ecliptCoord);
-		
 		double angularSize = getAngularSize(trueAnomaly);
-	System.out.println((float)angularSize);
+		
 		return new Sun(ecliptCoord,equaCoord,(float)angularSize, (float)meanAnomaly);
 	}
 	private double getMeanAnomaly(double D) {

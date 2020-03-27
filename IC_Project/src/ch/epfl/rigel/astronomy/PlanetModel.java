@@ -1,6 +1,5 @@
 package ch.epfl.rigel.astronomy;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import ch.epfl.rigel.coordinates.EclipticCoordinates;
@@ -43,6 +42,8 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	private final double bigOmega;
 	private final double angularSize;
 	private final double magnitude;
+	
+	
 	private PlanetModel(String name, double tropicalYear, double epsilon, double omega, double e, double a , double i, double bigOmega, double angularSize, double magnitude) {
 		this.name = name;
 		this.tropicalYear = tropicalYear;
@@ -77,8 +78,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 		double rho = getRho(R,r,l,L,psi);
 		double angularSize = getAngularSize(rho);
 		double magnitude = getMagnitude(lambda,l,r,rho);
-		System.out.println("ang="+angularSize);
-		System.out.println(magnitude);
 		EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(Angle.normalizePositive(lambda), beta));
 		return new Planet(name,coord,(float)angularSize,(float)magnitude);
 	}
@@ -138,8 +137,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	}
 	
 	private double getLat(double rp,double lp , double lambda, double psi, double R, double L) {
-	    System.out.println("R : "+R);
-	    System.out.println(L);
 		return Math.atan((rp* Math.tan(psi)*Math.sin(lambda-lp))/ (R*Math.sin(lp-L)));
 	}
 	

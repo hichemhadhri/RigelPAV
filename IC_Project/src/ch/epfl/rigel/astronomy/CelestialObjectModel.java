@@ -12,7 +12,7 @@ import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 public interface CelestialObjectModel<O> {
 	
 	
-	/**
+	/** Get <O> object with corresponding position at a specific day
 	 * @param daysSinceJ2010
 	 * @param eclipticToEquatorialConversion
 	 * @return
