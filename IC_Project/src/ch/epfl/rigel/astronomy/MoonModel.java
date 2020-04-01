@@ -54,13 +54,16 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 		
 		double lon = getMoonLongitude(ls,Np);
 		double lat = getMoonLatitude(ls,Np);
-		EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(lon, lat));
+		System.out.println("lonDeg"+Angle.toDeg(Angle.normalizePositive(lon)));
+		System.out.println("latDeg"+Angle.toDeg(lat));
+		EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(Angle.normalizePositive(lon), lat));
 		
-		
+		System.out.println("raHr"+coord.raHr());
+		System.out.println("dec"+coord.dec());
 		float angularSize = getAngularSize(Mmp,Ec);
-		float moonPhase = getMoonPhase(ls,M0);
+		double moonPhase = getMoonPhase(ls,lambda0);
 		
-		return new Moon(coord, angularSize, 0, moonPhase);
+		return new Moon(coord, angularSize, 0, (float)moonPhase);
 	}
 	
 	
@@ -71,8 +74,8 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 					);
 	}
 	
-	private float getMoonPhase(double ls, double lambda0) {
-		return (float)((1-Math.cos(ls-lambda0))/2);
+	private double getMoonPhase(double ls, double lambda0) {
+		return  ( 1 - Math.cos(ls-lambda0) ) / 2 ;
 	}
 	
 	
@@ -83,7 +86,7 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 		return l - Angle.ofDeg(0.1114041) * D - P0_RAD;
 	}
 	private double getEv(double l, double Mm, double lambda0) {
-		return Angle.ofDeg(1.2739)*Math.sin(2*(l-lambda0));
+		return Angle.ofDeg(1.2739)*Math.sin(2*(l-lambda0)-Mm);
 	}
 	private double getAe(double M0) {
 		return Angle.ofDeg(0.1858)*Math.sin(M0);
