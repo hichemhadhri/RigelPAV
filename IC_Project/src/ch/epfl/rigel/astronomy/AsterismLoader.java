@@ -6,8 +6,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import ch.epfl.rigel.astronomy.StarCatalogue.Builder;
 
@@ -21,6 +23,7 @@ public enum AsterismLoader implements StarCatalogue.Loader{
 
 	@Override
 	public void load(InputStream inputStream, Builder builder) throws IOException {
+	    Map<Integer,Star> starById = starById(builder); 
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.US_ASCII));
 		String[] asterismElements;
 		List<Star>stars=new ArrayList<Star>();
@@ -28,21 +31,23 @@ public enum AsterismLoader implements StarCatalogue.Loader{
 			asterismElements=reader.readLine().split(",");
 			stars.clear();
 			for(int i=0;i<asterismElements.length;++i) {
-				stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]),builder));
+				stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]),starById));
 			}
 			builder.addAsterism(new Asterism(stars));
 		}
 		reader.close();
 	}
 	
-	private Star getStarByHippar(int hipparCosId,Builder builder) {
-		Iterator<Star> iterator = builder.stars().iterator();
-		Star next;
-		while(iterator.hasNext()) {
-			next=iterator.next();
-			if(hipparCosId==next.hipparcosId())
-				return next;
-		}
-		return null;
+	private Star getStarByHippar(Integer hipparCosId,Map<Integer,Star> map ) {
+	  //  if(hipparCosId==97886) System.out.println(builder.stars().indexOf(map.get(hipparCosId)));
+		return map.get(hipparCosId); 
+	}
+	
+	private Map<Integer,Star> starById(Builder builder){
+	    Map<Integer,Star> result = new HashMap<Integer,Star>();
+	    for(Star star : builder.stars()) {
+	        result.put(star.hipparcosId(), star); 
+	    }
+	    return result; 
 	}
 }

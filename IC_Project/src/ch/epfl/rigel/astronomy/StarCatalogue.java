@@ -20,7 +20,7 @@ import ch.epfl.rigel.Preconditions;
  */
 public final class StarCatalogue {
 	private final List<Star> stars;
-	private final Set<Asterism> asterisms;
+	private final List<Asterism> asterisms;
 	private final Map<Asterism,List<Integer>> map;
 	
 	
@@ -64,7 +64,7 @@ public final class StarCatalogue {
 			return this;
 		}
 		public StarCatalogue build() {
-			return new StarCatalogue(this.stars,this.asterisms);
+			return new StarCatalogue(stars(),asterisms());
 		}
 		
 	}
@@ -79,18 +79,18 @@ public final class StarCatalogue {
 		while(iterator.hasNext()) {
 			Preconditions.checkArgument(stars.containsAll(iterator.next().stars()));	
 		}
+		this.map = intializeMap(asterisms,stars);
 		
 		this.stars = List.copyOf(stars);
 		//TODO: Check
-		this.asterisms = new HashSet<>(List.copyOf(asterisms));
+		this.asterisms = List.copyOf(asterisms);
 		
-		this.map = intializeMap(asterisms,stars);
 	}
 	public List<Star> stars(){
 		return stars;
 	}
 	public Set<Asterism> asterisms(){
-		return asterisms;
+		return this.map.keySet();
 	}
 	
 	/**
@@ -106,16 +106,18 @@ public final class StarCatalogue {
 		Map<Asterism,List<Integer>> result = new HashMap<Asterism,List<Integer>>();
 		List<Integer> container = new ArrayList<Integer>();
 		Asterism nextAsterism;
-		Iterator<Star> asterismStarsIterator;
+		
 		Iterator<Asterism> asterismsIterator = asterisms.iterator();
 		while(asterismsIterator.hasNext()) {
 			nextAsterism = asterismsIterator.next();
-			asterismStarsIterator = nextAsterism.stars().iterator();
+			
 			container.clear();
-			while(asterismStarsIterator.hasNext()) {
-				container.add(stars.indexOf(asterismStarsIterator.next()));
+			for(Star star : nextAsterism.stars()) {
+			 //  if(star.hipparcosId()==97886) System.out.println(stars.indexOf(star));
+				container.add(stars.indexOf(star));
 			}
 			result.put(nextAsterism, container);
+			
 		}
 		return result;
 	}

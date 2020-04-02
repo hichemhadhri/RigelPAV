@@ -37,7 +37,7 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 		reader.readLine(); //Skipping the first line that contains the column names
 		while(reader.ready()) {
 			starElements = reader.readLine().split(",");
-			starHippar = Integer.parseInt(starElements[DatabaseColumn.ID.ordinal()]);
+			starHippar = Integer.parseInt(replaceEmpty(starElements[DatabaseColumn.HIP.ordinal()],"0"));
 			starName = replaceEmpty(starElements[DatabaseColumn.PROPER.ordinal()],
 					replaceEmpty(starElements[DatabaseColumn.BAYER.ordinal()],"?")+" "+starElements[DatabaseColumn.CON.ordinal()]);
 			coord = EquatorialCoordinates.of(Double.parseDouble(starElements[DatabaseColumn.RARAD.ordinal()]), Double.parseDouble(starElements[DatabaseColumn.DECRAD.ordinal()]));
@@ -50,7 +50,7 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 		
 	}
 	private String replaceEmpty(String original,String replacement) {
-		return original == "" ? replacement : original;
+		return original.length() == 0 ? replacement : original;
 	}
 
 }
