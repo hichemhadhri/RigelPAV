@@ -79,9 +79,10 @@ public final class StarCatalogue {
 		while(iterator.hasNext()) {
 			Preconditions.checkArgument(stars.containsAll(iterator.next().stars()));	
 		}
-		this.map = intializeMap(asterisms,stars);
 		
 		this.stars = List.copyOf(stars);
+		this.map = intializeMap(asterisms,this.stars);
+		//System.out.println(this.map);
 		//TODO: Check
 		this.asterisms = List.copyOf(asterisms);
 		
@@ -100,25 +101,25 @@ public final class StarCatalogue {
 	 */
 	public List<Integer> asterismIndices(Asterism asterism){
 		Preconditions.checkArgument(asterisms.contains(asterism));
+		
 		return map.get(asterism);
 	}
 	private Map<Asterism,List<Integer>> intializeMap(List<Asterism> asterisms,List<Star>stars){
-		Map<Asterism,List<Integer>> result = new HashMap<Asterism,List<Integer>>();
-		List<Integer> container = new ArrayList<Integer>();
-		Asterism nextAsterism;
-		
-		Iterator<Asterism> asterismsIterator = asterisms.iterator();
-		while(asterismsIterator.hasNext()) {
-			nextAsterism = asterismsIterator.next();
-			
-			container.clear();
-			for(Star star : nextAsterism.stars()) {
-			 //  if(star.hipparcosId()==97886) System.out.println(stars.indexOf(star));
-				container.add(stars.indexOf(star));
-			}
-			result.put(nextAsterism, container);
-			
-		}
-		return result;
-	}
+        Map<Asterism,List<Integer>> result = new HashMap<Asterism,List<Integer>>();
+        Asterism nextAsterism;
+        
+        Iterator<Asterism> asterismsIterator = asterisms.iterator();
+        while(asterismsIterator.hasNext()) {
+            List<Integer> container = new ArrayList<Integer>();
+            nextAsterism = asterismsIterator.next();
+            container.clear();
+            for(Star star : nextAsterism.stars()) {
+             //  if(star.hipparcosId()==97886) System.out.println(stars.indexOf(star));
+                container.add(stars.indexOf(star));
+            }
+            result.put(nextAsterism, container);
+            
+        }
+        return result;
+    }
 }

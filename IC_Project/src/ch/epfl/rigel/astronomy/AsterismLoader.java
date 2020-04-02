@@ -30,6 +30,7 @@ public enum AsterismLoader implements StarCatalogue.Loader{
 		while(reader.ready()) {
 			asterismElements=reader.readLine().split(",");
 			stars.clear();
+			
 			for(int i=0;i<asterismElements.length;++i) {
 				stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]),starById));
 			}

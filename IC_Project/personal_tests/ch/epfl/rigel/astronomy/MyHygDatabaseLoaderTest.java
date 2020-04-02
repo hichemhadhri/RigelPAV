@@ -107,7 +107,9 @@ void variousTestsAndReadablePrintfOnCompletelyFinishedStarCatalogue() throws IOE
         while(asterismsIterator.hasNext()) {
             System.out.println("hello ");
             asterism = asterismsIterator.next();
+          
             List<Integer> cAstInd = catalogue.asterismIndices(asterism);
+            
             System.out.println(cAstInd);
             System.out.println(cAstInd.get(0));
             i = 0;
@@ -120,7 +122,7 @@ void variousTestsAndReadablePrintfOnCompletelyFinishedStarCatalogue() throws IOE
 
                 /*TEST : l'index stoqué dans asterismIndices renvoie le meme hipparcosId que
                 l'index stoqué dans l'astérisme voulu : */
-                assertEquals(allStar.get(cAstInd.get(i)).hipparcosId(), star.hipparcosId());
+                assertEquals(allStar.get(cAstInd.get(0)).hipparcosId(), asterism.stars().get(0).hipparcosId());
                 System.out.print(" ||| ");
                 i++;
             }
