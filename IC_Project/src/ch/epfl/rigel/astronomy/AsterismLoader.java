@@ -27,7 +27,7 @@ public enum AsterismLoader implements StarCatalogue.Loader{
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.US_ASCII));
 		String[] asterismElements;
 		List<Star>stars=new ArrayList<Star>();
-		while(reader.ready()) {
+	do {
 			asterismElements=reader.readLine().split(",");
 			stars.clear();
 			
@@ -35,12 +35,12 @@ public enum AsterismLoader implements StarCatalogue.Loader{
 				stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]),starById));
 			}
 			builder.addAsterism(new Asterism(stars));
-		}
+		}while(reader.ready());
 		reader.close();
-	}
+		}
+	
 	
 	private Star getStarByHippar(Integer hipparCosId,Map<Integer,Star> map ) {
-	  //  if(hipparCosId==97886) System.out.println(builder.stars().indexOf(map.get(hipparCosId)));
 		return map.get(hipparCosId); 
 	}
 	

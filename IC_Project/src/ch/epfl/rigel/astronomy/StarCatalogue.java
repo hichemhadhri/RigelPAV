@@ -82,8 +82,6 @@ public final class StarCatalogue {
 		
 		this.stars = List.copyOf(stars);
 		this.map = intializeMap(asterisms,this.stars);
-		//System.out.println(this.map);
-		//TODO: Check
 		this.asterisms = List.copyOf(asterisms);
 		
 	}
@@ -91,7 +89,7 @@ public final class StarCatalogue {
 		return stars;
 	}
 	public Set<Asterism> asterisms(){
-		return this.map.keySet();
+		return Collections.unmodifiableSet(this.map.keySet());
 	}
 	
 	/**
@@ -114,10 +112,10 @@ public final class StarCatalogue {
             nextAsterism = asterismsIterator.next();
             container.clear();
             for(Star star : nextAsterism.stars()) {
-             //  if(star.hipparcosId()==97886) System.out.println(stars.indexOf(star));
+            
                 container.add(stars.indexOf(star));
             }
-            result.put(nextAsterism, container);
+            result.put(nextAsterism, Collections.unmodifiableList(container));
             
         }
         return result;

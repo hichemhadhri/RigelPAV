@@ -31,5 +31,7 @@ public final class Moon extends CelestialObject{
 		return String.format(Locale.ROOT,"%s (%.1f%%)",super.info(), phase*100); 
 	}
 	
+	
+	
 
 }

@@ -54,12 +54,10 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 		
 		double lon = getMoonLongitude(ls,Np);
 		double lat = getMoonLatitude(ls,Np);
-		System.out.println("lonDeg"+Angle.toDeg(Angle.normalizePositive(lon)));
-		System.out.println("latDeg"+Angle.toDeg(lat));
+		
 		EquatorialCoordinates coord = eclipticToEquatorialConversion.apply(EclipticCoordinates.of(Angle.normalizePositive(lon), lat));
 		
-		System.out.println("raHr"+coord.raHr());
-		System.out.println("dec"+coord.dec());
+		
 		float angularSize = getAngularSize(Mmp,Ec);
 		double moonPhase = getMoonPhase(ls,lambda0);
 		
