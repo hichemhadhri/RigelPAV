@@ -6,7 +6,7 @@ import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import ch.epfl.rigel.math.Angle;
 
 
-/**
+/**SunModel enum 
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *
@@ -34,17 +34,17 @@ public enum SunModel implements CelestialObjectModel<Sun> {
 	}
 	private double getMeanAnomaly(double D) {
 	  
-		return (Angle.TAU/TROPICAL_YEAR)*D + EPSILON_G_RAD - OMEGA_G_RAD;
+		return (Angle.TAU / TROPICAL_YEAR) * D + EPSILON_G_RAD - OMEGA_G_RAD;
 	}
 	private double getTrueAnomaly(double M0) {
-		return M0+ 2 * EX * Math.sin(M0);
+		return M0 + 2 * EX * Math.sin(M0);
 	}
 	private double getEclipticLongitude(double v0) {
 		return v0 + OMEGA_G_RAD; 
 	}
 	
 	private double getAngularSize(double v0) {
-		return THETA0_RAD * ((1+EX*Math.cos(v0))/(1-EX*EX));
+		return THETA0_RAD * ( ( 1 + EX * Math.cos(v0) ) / ( 1 - EX * EX ) );
 	}
 
 }

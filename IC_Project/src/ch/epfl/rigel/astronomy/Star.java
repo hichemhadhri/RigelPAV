@@ -4,7 +4,7 @@ import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import ch.epfl.rigel.math.ClosedInterval;
 
-/**
+/**Star class 
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *
@@ -30,13 +30,19 @@ public final class Star extends CelestialObject{
 	}
 	
 	private double calculateColorTemperature(float colorIndex) {
-		return(4600 * (1/(0.92f*colorIndex+1.7f) + 1/(0.92f*colorIndex+0.62f)));
+		return(4600 * (1 / ( 0.92f * colorIndex + 1.7f ) + 1 / ( 0.92f * colorIndex + 0.62f ) ) );
 	}
 
+	/**HipparCosId getter
+	 * @return hipparcosId
+	 */
 	public int hipparcosId() {
 		return hipparcosId;
 	}
 	
+	/**colorTemperature getter
+	 * @return colorTemperature
+	 */
 	public int  colorTemperature() { 
 		return colorTemperature;
 	}

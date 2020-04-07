@@ -7,7 +7,7 @@ import ch.epfl.rigel.coordinates.EclipticToEquatorialConversion;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 import ch.epfl.rigel.math.Angle;
 
-/**
+/**Planet Model enum
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *
@@ -61,7 +61,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 
 	@Override
 	public Planet at(double daysSinceJ2010, EclipticToEquatorialConversion eclipticToEquatorialConversion) {
-	    double meanAnomalyTerre = ((Angle.TAU / 365.242191) * (daysSinceJ2010/EARTH.tropicalYear)) + EARTH.epsilon - EARTH.omega;
+	    double meanAnomalyTerre = ( ( Angle.TAU / 365.242191 ) * ( daysSinceJ2010 / EARTH.tropicalYear ) ) + EARTH.epsilon - EARTH.omega;
 	    double trueAnomalyTerre = meanAnomalyTerre + 2.0 * EARTH.e * Math.sin(meanAnomalyTerre);
 	    double R = (EARTH.a * (1.0 - Math.pow(EARTH.e,2))) / (1.0 + (EARTH.e * Math.cos(trueAnomalyTerre)));
         double L = trueAnomalyTerre + EARTH.omega;
@@ -85,35 +85,35 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	
 	
 	private double getMeanAnomaly(double D) {
-		return (Angle.TAU/EARTH_TROPICAL_YEAR)*(D/tropicalYear)+ epsilon - omega;
+		return (Angle.TAU / EARTH_TROPICAL_YEAR ) * ( D / tropicalYear ) + epsilon - omega;
 	}
 	private double getTrueAnomaly(double M) {
 		return M + 2 * e * Math.sin(M);
 	}
 	private double getRadius(double v) {
-		return (a*(1-e*e))/(1+e*Math.cos(v));
+		return ( a * ( 1 - e * e ) ) / ( 1 + e * Math.cos(v) );
 	}
 	private double getLongInOrbPlane(double v) {
 		return v + omega;
 	}
 	
 	private double getLatHelio(double l) {
-		return Math.asin(Math.sin(l-bigOmega)*Math.sin(i));
+		return Math.asin(Math.sin(l-bigOmega) * Math.sin(i));
 	}
 	
 	private double getRp(double r , double psi) {
-		return r*Math.cos(psi);
+		return r * Math.cos(psi);
 	}
 	private double getLp(double l) {
-		return Math.atan2(Math.sin(l-bigOmega)*Math.cos(i),Math.cos(l-bigOmega))+bigOmega;
+		return Math.atan2(Math.sin(l-bigOmega) * Math.cos(i) ,Math.cos(l-bigOmega) )+ bigOmega;
 	}
 	
 	
 	private double getLonforSup(double rp,double lp , double R, double L) {
-		return lp+ Math.atan2(R*Math.sin(lp-L), rp-R*Math.cos(lp-L));
+		return lp + Math.atan2(R * Math.sin(lp-L) , rp - R * Math.cos(lp-L) );
 	}
 	private double getLonforInf(double rp,double lp , double R, double L) {
-		return Angle.TAU/2 +L+ Math.atan2(rp*Math.sin(L-lp),R-rp*Math.cos(L-lp));
+		return Angle.TAU/2 + L + Math.atan2(rp * Math.sin(L-lp) , R - rp * Math.cos(L-lp) );
 	}
 	
 	private double getLon(double rp,double lp , double R, double L) {
@@ -135,19 +135,19 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	}
 	
 	private double getLat(double rp,double lp , double lambda, double psi, double R, double L) {
-		return Math.atan((rp* Math.tan(psi)*Math.sin(lambda-lp))/ (R*Math.sin(lp-L)));
+		return Math.atan( (rp * Math.tan(psi) * Math.sin(lambda-lp) ) / (R * Math.sin(lp-L) ) );
 	}
 	
 	private double getAngularSize(double rho) {
 		return angularSize/rho;
 	}
 	private double getRho(double R, double r, double l, double L,double psi) {
-		return Math.sqrt(R*R + r*r - 2*R*r*Math.cos(l-L)*Math.cos(psi));
+		return Math.sqrt(R * R + r * r - 2 * R * r * Math.cos(l-L) *Math.cos(psi) );
 	}
 	
 	private double getMagnitude(double lambda, double l,double r,double rho ) {
-		double F = (1+Math.cos(lambda-l))/2;
-		return magnitude+ 5*Math.log10((r*rho)/(Math.sqrt(F)));
+		double F = ( 1 + Math.cos(lambda-l) ) / 2;
+		return magnitude + 5 * Math.log10( ( r * rho ) / ( Math.sqrt(F) ) );
 	}
 	
 	

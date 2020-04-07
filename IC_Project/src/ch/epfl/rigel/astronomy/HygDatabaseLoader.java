@@ -9,7 +9,7 @@ import java.nio.charset.StandardCharsets;
 import ch.epfl.rigel.astronomy.StarCatalogue.Builder;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 
-/**
+/**HygDatabaseLoader class 
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *

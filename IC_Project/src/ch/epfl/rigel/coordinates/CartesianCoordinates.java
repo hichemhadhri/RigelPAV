@@ -1,6 +1,6 @@
 package ch.epfl.rigel.coordinates;
 
-/**
+/**CartesianCoordinates class
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  * CartesianCoordinates class
@@ -25,10 +25,16 @@ public final class CartesianCoordinates {
 		return new CartesianCoordinates(x,y);
 	}
 	
+	/** x getter
+	 * @return x
+	 */
 	public double x() {
 		return x;
 	}
 	
+	/**y getter 
+	 * @return y
+	 */
 	public double y() {
 		return y;
 	}

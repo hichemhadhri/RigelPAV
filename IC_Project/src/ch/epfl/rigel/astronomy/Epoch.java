@@ -29,7 +29,7 @@ public enum Epoch {
      */
     public double daysUntil(ZonedDateTime  when) {
         double res= date.until(when, ChronoUnit.MILLIS);
-        return res/8.64e+7;
+        return res / 8.64e+7;
     }
     
     /**Returns number of julian centuries between two dates
@@ -38,6 +38,6 @@ public enum Epoch {
      */
     public double julianCenturiesUntil(ZonedDateTime when) {
         double res = date.until(when, ChronoUnit.MILLIS);
-        return (res/8.64e+7)/36525;
+        return (res / 8.64e+7 ) / 36525;
     }
 }

@@ -60,7 +60,7 @@ public final class EclipticToEquatorialConversion implements Function<EclipticCo
     
     private double getDelta(EclipticCoordinates ecl) {
     	
-    	return Math.asin( Math.sin(ecl.lat()) * cosEclipObliq + Math.sin(ecl.lon()) * sinEclipObliq* Math.cos(ecl.lat()) );
+    	return Math.asin( Math.sin(ecl.lat()) * cosEclipObliq + Math.sin(ecl.lon()) * sinEclipObliq * Math.cos(ecl.lat()) );
     }
 
 

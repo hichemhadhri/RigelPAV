@@ -5,9 +5,9 @@ import java.util.Objects;
 import ch.epfl.rigel.coordinates.EquatorialCoordinates;
 
 /**
+ * CelestialObject class
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
- * CelestialObject class
  */
 public abstract  class CelestialObject {
 	
@@ -36,18 +36,30 @@ public abstract  class CelestialObject {
 		this.magnitude = magnitude;
 	}
 
+	/** name getter
+	 * @return name 
+	 */
 	public String name() {
 		return name;
 	}
 
+	/**angularSize getter
+	 * @return angularSize
+	 */
 	public double angularSize() {
 		return angularSize;
 	}
 
+	/**magnitude Getter
+	 * @return magnitude
+	 */
 	public double magnitude() {
 		return magnitude;
 	}
 
+	/**equatorialPos getter 
+	 * @return equatorialPos
+	 */
 	public EquatorialCoordinates equatorialPos() {
 		return equatorialPos;
 	}

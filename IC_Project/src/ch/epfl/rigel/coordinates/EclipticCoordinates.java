@@ -36,16 +36,19 @@ public final  class EclipticCoordinates extends SphericalCoordinates {
  
     
     
- 
+    @Override
     public double lon() {
         return super.lon();
     }
+    @Override
     public double lat() {
         return super.lat();
     }
+    @Override
     public double lonDeg() {
         return super.lonDeg();
     } 
+    @Override
     public double latDeg() {
         return super.latDeg();
     }

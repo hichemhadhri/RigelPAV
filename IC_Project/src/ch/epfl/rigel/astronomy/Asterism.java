@@ -22,7 +22,7 @@ public final class Asterism {
 	}
 	
 	
-	/**
+	/**stars Getter
 	 * @return stars list of the asterism
 	 */
 	public List<Star> stars(){

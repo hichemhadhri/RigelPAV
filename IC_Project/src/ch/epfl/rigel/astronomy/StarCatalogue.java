@@ -12,7 +12,7 @@ import java.util.Set;
 
 import ch.epfl.rigel.Preconditions;
 
-/**
+/**StarCatalogue Class
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *
@@ -23,7 +23,7 @@ public final class StarCatalogue {
 	private final Map<Asterism,List<Integer>> map;
 	
 	
-	/**
+	/**Loader Interface
 	 * @author Mohamed Hichem Hadhri (300434)
 	 * @author Khalil Haroun Achache (300350)
 	 *
@@ -45,21 +45,40 @@ public final class StarCatalogue {
 	public final static class Builder{
 		private List<Star> stars;
 		private List<Asterism> asterisms;
+		
+		/**Builder Constructor
+		 * 
+		 */
 		public Builder() {
 			this.stars = new ArrayList<Star>();
 			this.asterisms = new ArrayList<Asterism>();
 		}
+		
+		/**Add star
+		 * @param star to add
+		 * @return builder
+		 */
 		public Builder addStar(Star star) {
 			stars.add(star);
 			return this;
 		}
+		/**Returns current loaded stars
+		 * @return stars
+		 */
 		public List<Star> stars(){
 			return Collections.unmodifiableList(stars);
 		}
+		/**Add asterism
+		 * @param asterism to add
+		 * @return builder
+		 */
 		public Builder addAsterism(Asterism asterism) {
 			asterisms.add(asterism);
 			return this;
 		}
+		/**Returns current loaded asterisms
+		 * @return asterisms
+		 */
 		public List<Asterism> asterisms(){
 			return Collections.unmodifiableList(asterisms);
 		}
@@ -98,14 +117,20 @@ public final class StarCatalogue {
 		this.asterisms = List.copyOf(asterisms);
 		
 	}
+	/**Getter for stars
+	 * @return stars list
+	 */
 	public List<Star> stars(){
 		return stars;
 	}
+	/**Getter for asterisms
+	 * @return astersims set
+	 */
 	public Set<Asterism> asterisms(){
 		return Collections.unmodifiableSet(this.map.keySet());
 	}
 	
-	/**
+	/**Returns the asterism's stars indices
 	 * @param asterism
 	 * @return	A list of the index of the stars in the hygdatabase
 	 * @throws IllegalArgumentException if the asterism doesn't belong to the catalog  

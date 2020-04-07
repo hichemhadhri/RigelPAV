@@ -12,7 +12,7 @@ import java.util.Map;
 
 import ch.epfl.rigel.astronomy.StarCatalogue.Builder;
 
-/**
+/**AsterismLoader enum
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
  *

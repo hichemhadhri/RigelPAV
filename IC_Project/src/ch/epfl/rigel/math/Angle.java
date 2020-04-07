@@ -41,7 +41,8 @@ public final class Angle {
      * @throws IllegalArgumentException : if the min or sec value is not in the [0,60[ range
      */
     public static double ofDMS(int deg, int min, double sec){
-    	if((min<0|| min>=60)|| (sec<0|| sec>=60))
+        RightOpenInterval lim = RightOpenInterval.of(0, 60);
+        if(!lim.contains(min) || !lim.contains(sec))
     		throw new IllegalArgumentException();
         return Math.toRadians(deg+ min/60.0 + sec/3600.0);
     }
