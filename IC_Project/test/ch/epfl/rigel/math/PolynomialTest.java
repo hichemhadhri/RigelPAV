@@ -1,4 +1,4 @@
-
+// Rigel stage 1
 
 package ch.epfl.rigel.math;
 
@@ -45,7 +45,7 @@ class PolynomialTest {
 
     @Test
     void atWorksOnPolynomialOfDegree2() {
-        var poly = Polynomial.of(1, -7, 10);  
+        var poly = Polynomial.of(1, -7, 10); // (x - 5) * (x - 2)
         assertEquals(0, poly.at(5));
         assertEquals(0, poly.at(2));
         assertEquals(-2, poly.at(3));
@@ -56,7 +56,7 @@ class PolynomialTest {
 
     @Test
     void atWorksOnPolynomialOfDegree3() {
-        var poly = Polynomial.of(1, -6, 3, 10);  
+        var poly = Polynomial.of(1, -6, 3, 10); // (x - 5) * (x - 2) * (x + 1)
         assertEquals(poly.at(5), 0);
         assertEquals(poly.at(2), 0);
         assertEquals(poly.at(-1), 0);
@@ -69,7 +69,6 @@ class PolynomialTest {
     @Test
     void toStringWorksOnKnownPolynomials() {
         var polynomial1 = Polynomial.of(5.999999);
-        System.out.println(polynomial1.toString());
         assertEquals("5.999999", polynomial1.toString());
         var polynomial2 = Polynomial.of(-3.14);
         assertEquals("-3.14", polynomial2.toString());
@@ -85,7 +84,6 @@ class PolynomialTest {
         assertEquals("x^3-6.0x^2-10.0", polynomial7.toString());
         var polynomial8 = Polynomial.of(-2, 6, 2, -6);
         assertEquals("-2.0x^3+6.0x^2+2.0x-6.0", polynomial8.toString());
-       System.out.println(polynomial8.toString());
     }
 
     @Test

@@ -1,4 +1,4 @@
-
+// Rigel stage 1
 
 package ch.epfl.rigel.math;
 

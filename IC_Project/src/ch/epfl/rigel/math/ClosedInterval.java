@@ -2,6 +2,8 @@ package ch.epfl.rigel.math;
 
 import java.util.Locale;
 
+import ch.epfl.rigel.Preconditions;
+
 /**
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
@@ -23,8 +25,7 @@ public final class ClosedInterval extends Interval {
      * @return : ClosedInterval
      */
     public static ClosedInterval of(double low, double high) {
-        if(!(low<high))
-            throw new IllegalArgumentException(); 
+    	Preconditions.checkArgument(high>low);
         return new ClosedInterval(low, high); 
     }
     
@@ -35,8 +36,7 @@ public final class ClosedInterval extends Interval {
      * @return : symmetric ClosedInterval
      */
     public static ClosedInterval symmetric(double size) {
-        if(size<=0)
-            throw new IllegalArgumentException(); 
+    	Preconditions.checkArgument(size>0);
         
         return new ClosedInterval(-size/2,size/2);
     }

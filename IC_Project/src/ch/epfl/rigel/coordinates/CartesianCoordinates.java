@@ -25,16 +25,10 @@ public final class CartesianCoordinates {
 		return new CartesianCoordinates(x,y);
 	}
 	
-    /**  Abscissa getter
-     * @return abscissa
-     */
 	public double x() {
 		return x;
 	}
 	
-    /**  Ordinate getter
-     * @return ordinate
-     */
 	public double y() {
 		return y;
 	}
@@ -48,14 +42,14 @@ public final class CartesianCoordinates {
 	}
 	
     /**
-     * @return UnsupportedOperationException()
+     * @throws UnsupportedOperationException()
      */
     @Override
     public final int hashCode() {
         throw new UnsupportedOperationException(); 
     }
     /**
-     * @return UnsupportedOperationException()
+     * @throws UnsupportedOperationException()
      */
     @Override
     public final boolean equals(Object obj) {

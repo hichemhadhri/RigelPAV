@@ -25,7 +25,6 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 
 		Sun sun = SunModel.SUN.at(daysSinceJ2010, eclipticToEquatorialConversion);
 		double M0 = sun.meanAnomaly();
-		//TODO: CHECK ABOUT GEOCENTRIC
 		double lambda0 = sun.eclipticPos().lon();
 		
 		//Orbital Longitude
@@ -109,12 +108,10 @@ public enum MoonModel implements CelestialObjectModel<Moon> {
 		return N - Angle.ofDeg(0.16)*Math.sin(M0);
 	}
 	
-	//TODO: CHECK ATAN OR ATAN2 AND NORMALIZE
 	private double getMoonLongitude(double ls,double Np) {
 		return Math.atan2(Math.sin(ls-Np)*Math.cos(I_RAD), Math.cos(ls-Np)) + Np;
 	}
 	
-	//TODO: CHECK NORMALIZE
 	private double getMoonLatitude(double ls, double Np) {
 		return Math.asin(Math.sin(ls-Np)*Math.sin(I_RAD));
 	}

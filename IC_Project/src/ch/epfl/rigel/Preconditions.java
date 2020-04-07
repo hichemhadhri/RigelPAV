@@ -24,14 +24,14 @@ public final class Preconditions {
             throw new IllegalArgumentException(); 
     }
     
-   /**
+    /**
     * Check if value in Interval 
- * @param interval : Interval
- * @param value : double to verify
- * @throws IllegalArgumentException if value is NOT in interval 
- * @return value if in interval
- */
-public static  double checkInInterval(Interval interval, double value) {
+	* @param interval : Interval
+	* @param value : double to verify
+	* @throws IllegalArgumentException if value is NOT in interval 
+	* @return value if in interval
+	*/
+    public static  double checkInInterval(Interval interval, double value) {
        if(!interval.contains(value))
            throw new IllegalArgumentException(); 
        return value; 

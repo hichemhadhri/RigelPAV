@@ -2,6 +2,8 @@ package ch.epfl.rigel.math;
 
 import java.util.Locale;
 
+import ch.epfl.rigel.Preconditions;
+
 /**
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
@@ -22,8 +24,7 @@ public final class RightOpenInterval extends Interval{
      * @return : RightOpenInterval
      */
     public static RightOpenInterval of(double low, double high) {
-        if(!(low<high))
-            throw new IllegalArgumentException(); 
+    	Preconditions.checkArgument(low<high);
         return new RightOpenInterval(low, high); 
     }
     
@@ -34,9 +35,7 @@ public final class RightOpenInterval extends Interval{
      * @return symmetric RightOpenInterval
      */
     public static RightOpenInterval symmetric(double size) {
-        if(size<=0)
-            throw new IllegalArgumentException(); 
-        
+    	Preconditions.checkArgument(size>0); 
         return new RightOpenInterval(-size/2,size/2);
     }
     

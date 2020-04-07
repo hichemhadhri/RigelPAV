@@ -18,7 +18,7 @@ public final class Sun extends CelestialObject {
 	
 	
 	
-	/**
+	/** Sun constructor
 	 * @param eclipticPos
 	 * @param equatorialPos
 	 * @param angularSize
@@ -31,17 +31,11 @@ public final class Sun extends CelestialObject {
 		this.meanAnomaly = meanAnomaly;
 	}
 	
-	/**Getter for eclipticPos
-	 * @return eclipticPos
-	 */
 	public EclipticCoordinates eclipticPos() {
 	    
 	   return  EclipticCoordinates.of(eclipticPos.lon(),eclipticPos.lat());
 	}
 	
-	/**Getter for meanAnomaly
-	 * @return
-	 */
 	public double meanAnomaly() {
 		return meanAnomaly;
 	}

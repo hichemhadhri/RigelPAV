@@ -35,33 +35,24 @@ public abstract  class CelestialObject {
 		this.angularSize = angularSize;
 		this.magnitude = magnitude;
 	}
-	
-	/**Getter for name
-	 * @return name
-	 */
+
 	public String name() {
 		return name;
 	}
-	/**Getter for angularSize
-	 * @return angularSize
-	 */
+
 	public double angularSize() {
 		return angularSize;
 	}
-	/**Getter for magnitude
-	 * @return
-	 */
+
 	public double magnitude() {
 		return magnitude;
 	}
-	/**Getter for equatorialPos
-	 * @return
-	 */
+
 	public EquatorialCoordinates equatorialPos() {
 		return equatorialPos;
 	}
 	
-	/**Returns information of the celestialObject 
+	/**Returns information about the celestialObject 
 	 * @return info 
 	 */
 	public String info() {

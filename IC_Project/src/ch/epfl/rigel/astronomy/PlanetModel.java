@@ -97,7 +97,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 		return v + omega;
 	}
 	
-	///Result of a sin is in -pi/2 pi/2
 	private double getLatHelio(double l) {
 		return Math.asin(Math.sin(l-bigOmega)*Math.sin(i));
 	}
@@ -105,7 +104,6 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	private double getRp(double r , double psi) {
 		return r*Math.cos(psi);
 	}
-	///Result of a tan is in -pi pi
 	private double getLp(double l) {
 		return Math.atan2(Math.sin(l-bigOmega)*Math.cos(i),Math.cos(l-bigOmega))+bigOmega;
 	}

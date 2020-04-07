@@ -10,7 +10,7 @@ public final class Angle {
     private Angle(){}
 
     /**
-     * CONSTANT EQUALS TO 2*PI
+     * Constant equal to 2*PI
      */
     public static final double TAU = 2 * Math.PI;
     private static final double HOURS_PER_RAD = 24.0 / TAU;

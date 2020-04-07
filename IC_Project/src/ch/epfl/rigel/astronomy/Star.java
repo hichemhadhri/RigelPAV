@@ -14,7 +14,7 @@ public final class Star extends CelestialObject{
 	private final int colorTemperature;
 	
 	
-	/**
+	/** Star constructor
 	 * @param hipparcosId
 	 * @param name
 	 * @param equatorialPos
@@ -33,16 +33,10 @@ public final class Star extends CelestialObject{
 		return(4600 * (1/(0.92f*colorIndex+1.7f) + 1/(0.92f*colorIndex+0.62f)));
 	}
 
-	/**
-	 * @return
-	 */
 	public int hipparcosId() {
 		return hipparcosId;
 	}
 	
-	/**
-	 * @return color temperature
-	 */
 	public int  colorTemperature() { 
 		return colorTemperature;
 	}

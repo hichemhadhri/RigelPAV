@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +29,11 @@ public final class StarCatalogue {
 	 *
 	 */
 	public interface Loader{
+		/** Loads from a file
+		 * @param inputStream
+		 * @param builder
+		 * @throws IOException when the file cannot be correctly loaded
+		 */
 		void load(InputStream inputStream, Builder builder) throws IOException;
 	}
 	
@@ -59,17 +63,26 @@ public final class StarCatalogue {
 		public List<Asterism> asterisms(){
 			return Collections.unmodifiableList(asterisms);
 		}
+		/** Loads a specified object from file
+		 * @param inputStream
+		 * @param loader
+		 * @return the same builder to allow cascading operations
+		 * @throws IOException
+		 */
 		public Builder loadFrom(InputStream inputStream, Loader loader)throws IOException {
 			loader.load(inputStream, this);
 			return this;
 		}
+		/** Builds the starCatalogue
+		 * @return the built catalogue
+		 */
 		public StarCatalogue build() {
 			return new StarCatalogue(stars(),asterisms());
 		}
 		
 	}
 	
-	/**
+	/** StarCatalogue constructor
 	 * @param stars
 	 * @param asterisms
 	 */
@@ -94,7 +107,7 @@ public final class StarCatalogue {
 	
 	/**
 	 * @param asterism
-	 * @return
+	 * @return	A list of the index of the stars in the hygdatabase
 	 * @throws IllegalArgumentException if the asterism doesn't belong to the catalog  
 	 */
 	public List<Integer> asterismIndices(Asterism asterism){
