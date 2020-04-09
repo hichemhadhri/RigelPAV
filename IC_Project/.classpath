@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="resources"/>
 	<classpathentry kind="src" path="sigcheck"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="personal_tests"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="module" value="true"/>

@@ -138,7 +138,7 @@ public final class StarCatalogue {
 	public List<Integer> asterismIndices(Asterism asterism){
 		Preconditions.checkArgument(asterisms.contains(asterism));
 		
-		return map.get(asterism);
+		return List.copyOf(map.get(asterism));
 	}
 	private Map<Asterism,List<Integer>> intializeMap(List<Asterism> asterisms,List<Star>stars){
         Map<Asterism,List<Integer>> result = new HashMap<Asterism,List<Integer>>();
