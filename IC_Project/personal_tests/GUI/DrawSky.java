@@ -35,7 +35,7 @@ public final class DrawSky extends Application {
     try (InputStream hs = resourceStream("/hygdata_v3.csv")){
     
       StarCatalogue catalogue = new StarCatalogue.Builder()
-	.loadFrom(hs, HygDatabaseLoader.INSTANCE)//.loadFrom(resourceStream("/asterisms.txt"), AsterismLoader.INSTANCE)
+	.loadFrom(hs, HygDatabaseLoader.INSTANCE).loadFrom(resourceStream("/asterisms.txt"), AsterismLoader.INSTANCE)
 	.build();
 
       ZonedDateTime when =
