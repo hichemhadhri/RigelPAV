@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 
 import javax.imageio.ImageIO;
 
+import ch.epfl.rigel.astronomy.AsterismLoader;
 import ch.epfl.rigel.astronomy.HygDatabaseLoader;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
@@ -32,8 +33,9 @@ public final class DrawSky extends Application {
   @Override
   public void start(Stage primaryStage) throws Exception {
     try (InputStream hs = resourceStream("/hygdata_v3.csv")){
+    
       StarCatalogue catalogue = new StarCatalogue.Builder()
-	.loadFrom(hs, HygDatabaseLoader.INSTANCE)
+	.loadFrom(hs, HygDatabaseLoader.INSTANCE)//.loadFrom(resourceStream("/asterisms.txt"), AsterismLoader.INSTANCE)
 	.build();
 
       ZonedDateTime when =

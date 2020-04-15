@@ -60,7 +60,7 @@ public class SkyCanvasPainter {
 		for(int i =0 ; i<centers.length/2;++i) {
 			ctx.setFill(BlackBodyColor.colorForTemperature(obs.stars().get(i).colorTemperature()));
 			diameter=getDiameter(obs.stars().get(i))*transform.getMxx();
-			ctx.fillOval(centers[2*i], centers[2*i+1], diameter, diameter);
+			ctx.fillOval(centers[2*i]-diameter/2, centers[2*i+1]-diameter/2, diameter, diameter);
 		}
 	}
 	public void drawPlanets(ObservedSky obs, Transform transform ) {
