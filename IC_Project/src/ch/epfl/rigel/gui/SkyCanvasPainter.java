@@ -15,6 +15,7 @@ import javafx.geometry.VPos;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
+import javafx.scene.text.TextAlignment;
 import javafx.scene.transform.Transform;
 
 public class SkyCanvasPainter {
@@ -43,6 +44,8 @@ public class SkyCanvasPainter {
 		transform.transform2DPoints(obs.starsPositions(), 0, centers, 0, centers.length/2);
 		//Drawing Asterism
 		ctx.setStroke(ASTERISM_COLOR);
+		
+		ctx.setLineWidth(1);
 		int indexStart;//The indexes of the star in the obs.stars list (to map the coordinates)
 		int indexEnd;
 		for(Asterism asterism: obs.asterisms()) {
@@ -79,7 +82,7 @@ public class SkyCanvasPainter {
 	}
 	public void drawSun(ObservedSky obs, Transform transform ) {
 		Point2D center = transform.transform(obs.sunPosition().x(),obs.sunPosition().y());
-		double diameter = getDiameter(obs.sun())*transform.getMxx();
+		double diameter = 2*Math.tan(obs.sun().angularSize()/4)*transform.getMxx();
 		ctx.setFill(SUN_OUTER_COLOR);
 		ctx.fillOval(getCorrCoord(center.getX(),diameter*2.2),getCorrCoord(center.getY(),diameter*2.2),diameter*2.2,diameter*2.2);
 		ctx.setFill(SUN_MID_COLOR);
@@ -89,7 +92,7 @@ public class SkyCanvasPainter {
 	}
 	public void drawMoon(ObservedSky obs, Transform transform ) {
 		Point2D center = transform.transform(obs.moonPosition().x(),obs.moonPosition().y());
-		double diameter = getDiameter(obs.moon())*transform.getMxx();
+		double diameter = 2*Math.tan(obs.moon().angularSize()/4)*transform.getMxx();
 		ctx.setFill(MOON_COLOR);
 		ctx.fillOval(getCorrCoord(center.getX(),diameter),getCorrCoord(center.getY(),diameter),diameter,diameter);
 	}
@@ -105,12 +108,13 @@ public class SkyCanvasPainter {
 		ctx.strokeOval(getCorrCoord(center.getX(),diameter), getCorrCoord(center.getY(),diameter), diameter, diameter);
 		//Drawing the text
 		ctx.setTextBaseline(VPos.TOP);
+		ctx.setTextAlign(TextAlignment.CENTER);
 		ctx.setFill(HORIZON_COLOR);
 		HorizontalCoordinates textHorCoord ;
 		CartesianCoordinates centerTextCartCoord;
 		Point2D centerText;
 		for(int i=0; i<360;i+=45) {
-			textHorCoord=HorizontalCoordinates.of(Angle.ofDeg(i), 0);
+			textHorCoord=HorizontalCoordinates.of(Angle.ofDeg(i), 0.5);
 			centerTextCartCoord= projection.apply(textHorCoord);
 			centerText= transform.transform(centerTextCartCoord.x(), centerTextCartCoord.y());
 			ctx.fillText(textHorCoord.azOctantName("N", "E", "S", "O"), centerText.getX(), centerText.getY());
