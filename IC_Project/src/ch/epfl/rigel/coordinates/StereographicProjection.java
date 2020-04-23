@@ -40,7 +40,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
      * @return radius
      */
     public double circleRadiusForParallel(HorizontalCoordinates parallel) {
-        return Math.cos(parallel.alt())/(sinC+Math.sin(parallel.alt())); 
+        return Math.abs(Math.cos(parallel.alt())/(sinC+Math.sin(parallel.alt()))); 
     }
     
     /**Calculates the diameter of the projected sphere of angular size rad
