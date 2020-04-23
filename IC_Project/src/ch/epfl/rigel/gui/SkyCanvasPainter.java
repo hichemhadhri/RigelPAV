@@ -104,17 +104,19 @@ public class SkyCanvasPainter {
 		HorizontalCoordinates parallel = HorizontalCoordinates.of(0, 0);
 		CartesianCoordinates centerCart = projection.circleCenterForParallel(parallel);
 		Point2D center = transform.transform(centerCart.x(), centerCart.y());
-		double diameter = 2*projection.circleRadiusForParallel(parallel)*transform.getMxx();
+		double diameter = Math.abs(2*projection.circleRadiusForParallel(parallel)*transform.getMxx());
+		
 		ctx.strokeOval(getCorrCoord(center.getX(),diameter), getCorrCoord(center.getY(),diameter), diameter, diameter);
 		//Drawing the text
 		ctx.setTextBaseline(VPos.TOP);
+		
 		ctx.setTextAlign(TextAlignment.CENTER);
 		ctx.setFill(HORIZON_COLOR);
 		HorizontalCoordinates textHorCoord ;
 		CartesianCoordinates centerTextCartCoord;
 		Point2D centerText;
 		for(int i=0; i<360;i+=45) {
-			textHorCoord=HorizontalCoordinates.of(Angle.ofDeg(i), 0.5);
+			textHorCoord=HorizontalCoordinates.of(Angle.ofDeg(i), Angle.ofDeg(-0.5));
 			centerTextCartCoord= projection.apply(textHorCoord);
 			centerText= transform.transform(centerTextCartCoord.x(), centerTextCartCoord.y());
 			ctx.fillText(textHorCoord.azOctantName("N", "E", "S", "O"), centerText.getX(), centerText.getY());

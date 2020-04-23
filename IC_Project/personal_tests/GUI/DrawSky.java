@@ -43,19 +43,19 @@ public final class DrawSky extends Application {
       GeographicCoordinates where =
 	GeographicCoordinates.ofDeg(6.57, 46.52);
       
-      HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 90);//transform
-      //HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(277, -23);
-      //HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 23);//Sun
+     //HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 90);//transform
+      HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(277, -23);
+     // HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 23);//Sun
       //HorizontalCoordinates projCenter =HorizontalCoordinates.ofDeg(180, 45);
      // HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(3.7, -65);//lune
       StereographicProjection projection =
 	new StereographicProjection(projCenter);
       ObservedSky sky =
 	new ObservedSky(when, where, projection, catalogue);
-    Transform planeToCanvas = Transform.affine(260, 0, 0, -260, 400, 300);//other transform
+   // Transform planeToCanvas = Transform.affine(260, 0, 0, -260, 400, 300);//other transform
       Canvas canvas =
 	new Canvas(800, 600);
-     // Transform planeToCanvas =Transform.affine(1300, 0, 0, -1300, 400, 300); //prof transfrom
+      Transform planeToCanvas =Transform.affine(1300, 0, 0, -1300, 400, 300); //prof transfrom
       SkyCanvasPainter painter =
 	new SkyCanvasPainter(canvas);
 
