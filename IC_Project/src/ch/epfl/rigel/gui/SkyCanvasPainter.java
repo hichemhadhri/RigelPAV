@@ -104,7 +104,7 @@ public class SkyCanvasPainter {
 		HorizontalCoordinates parallel = HorizontalCoordinates.of(0, 0);
 		CartesianCoordinates centerCart = projection.circleCenterForParallel(parallel);
 		Point2D center = transform.transform(centerCart.x(), centerCart.y());
-		double diameter = Math.abs(2*projection.circleRadiusForParallel(parallel)*transform.getMxx());
+		double diameter = 2*projection.circleRadiusForParallel(parallel)*transform.getMxx();
 		
 		ctx.strokeOval(getCorrCoord(center.getX(),diameter), getCorrCoord(center.getY(),diameter), diameter, diameter);
 		//Drawing the text
