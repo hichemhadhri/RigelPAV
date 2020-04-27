@@ -1,5 +1,7 @@
 package ch.epfl.rigel.math;
 
+import ch.epfl.rigel.Preconditions;
+
 /**
  * @author Mohamed Hichem Hadhri (300434)
  * @author Khalil Haroun Achache (300350)
@@ -42,8 +44,10 @@ public final class Angle {
      */
     public static double ofDMS(int deg, int min, double sec){
         RightOpenInterval lim = RightOpenInterval.of(0, 60);
-        if(!lim.contains(min) || !lim.contains(sec))
-    		throw new IllegalArgumentException();
+        Preconditions.checkArgument(deg>=0);
+        Preconditions.checkInInterval(lim, min);
+        Preconditions.checkInInterval(lim, sec);
+       
         return Math.toRadians(deg+ min/60.0 + sec/3600.0);
     }
 
