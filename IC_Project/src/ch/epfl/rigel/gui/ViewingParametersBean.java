@@ -20,28 +20,29 @@ public class ViewingParametersBean {
 		center = new SimpleObjectProperty<>();
 	}
 
-	public HorizontalCoordinates getCenter() {
-		return center.get();
-	}
 
 	public ObjectProperty<HorizontalCoordinates> center() {
 		return center;
 	}
 
-	public double getFieldOfViewDeg() {
-		return fieldOfViewDeg.get();
-	}
-
-	public DoubleProperty fieldOfViewDeg() {
-		return fieldOfViewDeg;
+	public HorizontalCoordinates getCenter() {
+		return center.get();
 	}
 
 	public void setCenter(HorizontalCoordinates center) {
 		this.center.set(center);
 	}
 
+	public DoubleProperty fieldOfViewDeg() {
+		return fieldOfViewDeg;
+	}
+	public double getFieldOfViewDeg() {
+		return fieldOfViewDeg.get();
+	}
+
+
 	public void setFieldOfViewDeg(double fieldDeg) {
-		this.setFieldOfViewDeg(fieldDeg);
+		this.fieldOfViewDeg.set(fieldDeg);
 	}
 
 }

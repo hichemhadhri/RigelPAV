@@ -35,7 +35,7 @@ public final class DrawSky extends Application {
     try (InputStream hs = resourceStream("/hygdata_v3.csv")){
     
       StarCatalogue catalogue = new StarCatalogue.Builder()
-	.loadFrom(hs, HygDatabaseLoader.INSTANCE).loadFrom(resourceStream("/asterisms.txt"), AsterismLoader.INSTANCE)
+	.loadFrom(hs, HygDatabaseLoader.INSTANCE)//.loadFrom(resourceStream("/asterisms.txt"), AsterismLoader.INSTANCE)
 	.build();
 
       ZonedDateTime when =
@@ -44,9 +44,9 @@ public final class DrawSky extends Application {
 	GeographicCoordinates.ofDeg(6.57, 46.52);
       
      //HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 90);//transform
-      HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(277, -23);
+      //HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(277, -23);
      // HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(0, 23);//Sun
-      //HorizontalCoordinates projCenter =HorizontalCoordinates.ofDeg(180, 45);
+      HorizontalCoordinates projCenter =HorizontalCoordinates.ofDeg(180, 45);
      // HorizontalCoordinates projCenter = HorizontalCoordinates.ofDeg(3.7, -65);//lune
       StereographicProjection projection =
 	new StereographicProjection(projCenter);
@@ -59,12 +59,7 @@ public final class DrawSky extends Application {
       SkyCanvasPainter painter =
 	new SkyCanvasPainter(canvas);
 
-      painter.clear();
-      painter.drawPlanets(sky, planeToCanvas);
-      painter.drawSun(sky, planeToCanvas);
-      painter.drawMoon(sky, planeToCanvas);
-      painter.drawStars(sky, projection, planeToCanvas);
-      painter.drawHorizon(sky, projection, planeToCanvas);
+      painter.drawAll(sky, planeToCanvas, projection);
 
       WritableImage fxImage =
 	canvas.snapshot(null, null);

@@ -123,10 +123,19 @@ public class SkyCanvasPainter {
 		}
 		 
 	}
+	public void drawAll(ObservedSky sky,Transform planeToCanvas,StereographicProjection projection) {
+	      clear();
+	      drawPlanets(sky, planeToCanvas);
+	      drawSun(sky, planeToCanvas);
+	      drawMoon(sky, planeToCanvas);
+	      drawStars(sky, projection, planeToCanvas);
+	      drawHorizon(sky, projection, planeToCanvas);
+		
+	}
 	private double getDiameter(CelestialObject obj) {
 		double mp = Math.min(5, Math.max(-2, obj.magnitude()));
 		double f = (99-17*mp)/140;
-		return f* 2* Math.tan(Angle.ofDeg(0.5/4));
+		return f* 2* Math.tan(Angle.ofDeg(0.5)/4);
 	}
 	
 	private double getCorrCoord(double coord, double diameter) {
