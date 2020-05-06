@@ -42,6 +42,10 @@ public final class TimeAnimator extends AnimationTimer {
         this.accelerator.set(ta);
     }
     
+    public DateTimeBean getDateTimeBean() {
+       return d; 
+    }
+    
     @Override
     public void handle(long now) {
         if(res==0)
@@ -57,7 +61,7 @@ public final class TimeAnimator extends AnimationTimer {
         res= now ;
         }
         
-        System.out.println(res);
+        
     }
     @Override
     public void start() {
@@ -69,8 +73,8 @@ public final class TimeAnimator extends AnimationTimer {
     }
     @Override 
     public void stop() {
-        running.set(false);
-        
+        super.stop();
+        running.setValue(false);
         
         
     }

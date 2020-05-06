@@ -26,7 +26,7 @@ public class SkyCanvasManager {
 	private DoubleBinding mouseAzDeg;
 	private DoubleBinding mouseAltDeg;
 	///// VERIFY
-	private ObjectBinding<Optional<CelestialObject>> objectUnderMouse;
+	private ObjectBinding<CelestialObject> objectUnderMouse;
 
 	private ObjectBinding<StereographicProjection> projection;
 	private ObjectBinding<Transform> planeToCanvas;
@@ -56,7 +56,7 @@ public class SkyCanvasManager {
 		objectUnderMouse = Bindings.createObjectBinding(() -> {
 			Point2D coordMouse = planeToCanvas.get().inverseTransform(mousePosition.get().x(),mousePosition.get().y());
 			CartesianCoordinates coords = CartesianCoordinates.of(coordMouse.getX(), coordMouse.getY());
-			return observedSky.get().ObjectClosestTo(coords, MAX_OBJECTS);
+			return observedSky.get().ObjectClosestTo(coords, MAX_OBJECTS).get();
 		}, observedSky, mousePosition, planeToCanvas);
 		mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
 			Point2D coords = planeToCanvas.get().inverseTransform(mousePosition.get().x(), mousePosition.get().y());
@@ -110,8 +110,16 @@ public class SkyCanvasManager {
 			
 			painter.drawAll(observedSky.get(), planeToCanvas.get(), projection.get());
 		});
+		
+		//ajoutiha bech nupdati changement naarech ken fama makhir
+		observedSky.addListener((o)->{
+            
+            painter.drawAll(observedSky.get(), planeToCanvas.get(), projection.get());
+        });
+		
+		
 	}
-	public ObjectBinding<Optional<CelestialObject>> objectUnderMouseProperty(){
+	public ObjectBinding<CelestialObject> objectUnderMouseProperty(){
 		return objectUnderMouse;
 	}
 	public Canvas canvas() {

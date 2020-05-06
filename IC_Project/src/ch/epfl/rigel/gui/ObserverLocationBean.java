@@ -22,6 +22,7 @@ public class ObserverLocationBean {
 		return lonDeg;
 	}
 	public void setLonDeg(double lonDeg) {
+	    System.out.println("hi");
 		this.lonDeg.set(lonDeg);
 	}
 	public double getLonDeg() {

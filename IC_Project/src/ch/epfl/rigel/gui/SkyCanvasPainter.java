@@ -125,10 +125,10 @@ public class SkyCanvasPainter {
 	}
 	public void drawAll(ObservedSky sky,Transform planeToCanvas,StereographicProjection projection) {
 	      clear();
+	      drawStars(sky, projection, planeToCanvas);
 	      drawPlanets(sky, planeToCanvas);
 	      drawSun(sky, planeToCanvas);
 	      drawMoon(sky, planeToCanvas);
-	      drawStars(sky, projection, planeToCanvas);
 	      drawHorizon(sky, projection, planeToCanvas);
 		
 	}
