@@ -1,5 +1,6 @@
 package ch.epfl.rigel.math;
 
+import ch.epfl.rigel.Preconditions;
 
 /**
  * @author Mohamed Hichem Hadhri (300434)
@@ -24,9 +25,8 @@ public final class Polynomial {
      * @return polynom
      */
 	public static Polynomial of(double coefficientN, double... coefficients) {
-		if(coefficientN==0)
-			throw new IllegalArgumentException();
-	  
+		
+	    Preconditions.checkArgument(coefficientN !=0);
 		return new Polynomial(coefficientN,coefficients);
 	}
 	
@@ -82,12 +82,12 @@ public final class Polynomial {
     }
     
     @Override
-    public final int hashCode() {
+    public  int hashCode() {
         throw new UnsupportedOperationException(); 
     }
     
     @Override
-    public final boolean equals(Object obj) {
+    public  boolean equals(Object obj) {
         throw new UnsupportedOperationException(); 
     }
 }

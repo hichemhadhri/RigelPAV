@@ -42,6 +42,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	private final double bigOmega;
 	private final double angularSize;
 	private final double magnitude;
+	private final double cs ;
 	
 	
 	private PlanetModel(String name, double tropicalYear, double epsilon, double omega, double e, double a , double i, double bigOmega, double angularSize, double magnitude) {
@@ -55,6 +56,7 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 		this.bigOmega = Angle.ofDeg(bigOmega);
 		this.angularSize = Angle.ofArcsec(angularSize);
 		this.magnitude = magnitude;
+		this.cs=Math.cos(i) * Math.sin(i);
 	}
 	
 	

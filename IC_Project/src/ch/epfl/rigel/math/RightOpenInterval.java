@@ -39,7 +39,7 @@ public final class RightOpenInterval extends Interval{
         return new RightOpenInterval(-size/2,size/2);
     }
     
-   private double floorMod(double x, double y ) {
+   private static double floorMod(double x, double y ) {
        return x-y*Math.floor(x/y);
    }
     
@@ -50,7 +50,7 @@ public final class RightOpenInterval extends Interval{
      * @return  reduced double in [low,high[
      */
     public double reduce(double v) {
-        return super.low()+ floorMod(v-super.low(),super.high()-super.low());
+        return super.low()+ floorMod(v-super.low(),super.size());
     }
 
     @Override

@@ -113,7 +113,7 @@ public class Main extends Application {
         Label latitude = new Label("Latitude (°) :");
         
         TextField lonTextField = new TextField();
-        lonTextField.setFocusTraversable(false);
+        
         TextFormatter<Number> lonTF=createTextFormatter(true);
         lonTextField.setTextFormatter(lonTF);
         lonTextField.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
@@ -122,7 +122,7 @@ public class Main extends Application {
         TextFormatter<Number> latTF=createTextFormatter(false);
         latTextField.setTextFormatter(latTF);
         latTextField.setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
-       latTextField.setFocusTraversable(false);
+       
         latTF.valueProperty().bindBidirectional(obs.latDeg());
         
         HBox position = new HBox(longitude,lonTextField,latitude,latTextField);

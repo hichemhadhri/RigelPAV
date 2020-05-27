@@ -21,7 +21,7 @@ public final class Preconditions {
      */
     public static void checkArgument(boolean isTrue) {
         if(!isTrue)
-            throw new IllegalArgumentException(); 
+            throw new IllegalArgumentException("boolean equals to FALSE"); 
     }
     
     /**
@@ -33,7 +33,7 @@ public final class Preconditions {
 	*/
     public static  double checkInInterval(Interval interval, double value) {
        if(!interval.contains(value))
-           throw new IllegalArgumentException(); 
+           throw new IllegalArgumentException("value not in interval"); 
        return value; 
     }
 }

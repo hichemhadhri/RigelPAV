@@ -19,8 +19,8 @@ public final class SiderealTime {
          
      }
      
-     private static  Polynomial s0p= Polynomial.of(0.000025862, 2400.051336,6.697374558);
-     private static Polynomial s1p= Polynomial.of(1.002737909,0);
+     private final  static  Polynomial s0p= Polynomial.of(0.000025862, 2400.051336,6.697374558);
+     private final static Polynomial s1p= Polynomial.of(1.002737909,0);
      
      /**Returns the greenwich sidereal Time 
      * @param when : date to determine its greenwich sidereal Time
