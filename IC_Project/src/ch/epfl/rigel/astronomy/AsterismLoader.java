@@ -23,21 +23,26 @@ public enum AsterismLoader implements StarCatalogue.Loader {
 	INSTANCE;
 
 	@Override
-	public void load(InputStream inputStream, Builder builder) throws IOException {
+	public void load(InputStream inputStream, Builder builder) throws IOException{
 		Map<Integer, Star> starById = starById(builder);
 		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.US_ASCII));
 		String[] asterismElements;
 		List<Star> stars = new ArrayList<Star>();
-		do {
-			asterismElements = reader.readLine().split(",");
-			stars.clear();
-
-			for (int i = 0; i < asterismElements.length; ++i) {
-				stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]), starById));
-			}
-			builder.addAsterism(new Asterism(stars));
-		} while (reader.ready());
-		reader.close();
+		try {
+			do {
+				asterismElements = reader.readLine().split(",");
+				stars.clear();
+				
+				for (int i = 0; i < asterismElements.length; ++i) {
+					stars.add(getStarByHippar(Integer.parseInt(asterismElements[i]), starById));
+				}
+				builder.addAsterism(new Asterism(stars));
+			} while (reader.ready());
+		}catch (IOException exception) {
+			exception.printStackTrace();
+		}finally {
+			reader.close();			
+		}
 	}
 
 	private Star getStarByHippar(Integer hipparCosId, Map<Integer, Star> map) {

@@ -15,8 +15,8 @@ import ch.epfl.rigel.math.RightOpenInterval;
  * @author Khalil Haroun Achache (300350)
  */
 public class HorizontalCoordinates extends SphericalCoordinates {
-    private static final Interval azInterval = RightOpenInterval.of(0,Angle.TAU);
-    private static final Interval altInterval = ClosedInterval.of(-Angle.TAU/4,Angle.TAU/4);
+    private static final Interval AZINTERVAL = RightOpenInterval.of(0,Angle.TAU);
+    private static final Interval ALTINTERVAL = ClosedInterval.of(-Angle.TAU/4,Angle.TAU/4);
 	private HorizontalCoordinates(double longtitude, double latitude) {
 		super(longtitude, latitude);
 	}
@@ -28,8 +28,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	 * @return a HorziontalCoordinates Object
 	 */
 	public static HorizontalCoordinates of(double az, double alt) {
-	    Preconditions.checkInInterval(azInterval, az);
-        Preconditions.checkInInterval(altInterval, alt);
+	    Preconditions.checkInInterval(AZINTERVAL, az);
+        Preconditions.checkInInterval(ALTINTERVAL, alt);
 		return new HorizontalCoordinates(az,alt);
 	}
 	
@@ -40,8 +40,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return a HorziontalCoordinates Object
      */
 	public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
-	    Preconditions.checkInInterval(azInterval, Angle.ofDeg(azDeg));
-        Preconditions.checkInInterval(altInterval, Angle.ofDeg(altDeg));
+	    Preconditions.checkInInterval(AZINTERVAL, Angle.ofDeg(azDeg));
+        Preconditions.checkInInterval(ALTINTERVAL, Angle.ofDeg(altDeg));
 		return new HorizontalCoordinates(Angle.ofDeg(azDeg),Angle.ofDeg(altDeg));
 	}
 	
@@ -78,17 +78,13 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	 * @return Octant string
 	 */
 	public String azOctantName(String n, String e, String s, String w) {
-		String out="";
-		if(azDeg()>=292.5 || azDeg()<67.5)
-			out+=n;
-		else if(azDeg()>=112.5 && azDeg()<247.5)
-			out+=s;
-		
-		if(azDeg()>=22.5 && azDeg()<157.5)
-			out+=e;
-		else if(azDeg()>=202.5 && azDeg()<=337.5)
-			out+=w;
-		return out;
+		String octants[] = {n,n+e,e,s+e,s,s+w,w,n+w};
+		for (int i = 0 ; i<8 ; ++i) {
+			if (RightOpenInterval.of(45*i, 45*(i+1)).contains(((RightOpenInterval)AZINTERVAL).reduce(azDeg()+22.5))){
+				return octants[i];
+			}
+		}
+		return "";
 	}
 	/**Calculates the angularDistance between the current Object and that(parameter)
 	 * @param that : second coordinates

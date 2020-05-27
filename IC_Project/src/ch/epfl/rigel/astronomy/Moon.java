@@ -12,8 +12,9 @@ import ch.epfl.rigel.math.ClosedInterval;
  *
  */
 public final class Moon extends CelestialObject{
-	private final static String defaultName = "Lune";
-	private final float phase;
+	private final static String DEFAULTNAME = "Lune";
+	private final static ClosedInterval MOONPHASEINTERVAL = ClosedInterval.of(0, 1);
+	private final float PHASE;
 	
 	/**Moon Constructor
 	 * @param equatorialPos
@@ -21,14 +22,14 @@ public final class Moon extends CelestialObject{
 	 * @param magnitude
 	 * @param phase: Moon phase
 	 */
-	public Moon(EquatorialCoordinates equatorialPos, float angularSize, float magnitude,float phase) {
-		super(defaultName, equatorialPos, angularSize, magnitude);
-		this.phase=(float) Preconditions.checkInInterval(ClosedInterval.of(0, 1), phase);
+	public Moon(EquatorialCoordinates equatorialPos, float angularSize, float magnitude, float phase) {
+		super(DEFAULTNAME, equatorialPos, angularSize, magnitude);
+		this.PHASE=(float) Preconditions.checkInInterval(MOONPHASEINTERVAL, phase);
 	}
 	
 	@Override
 	public String info() {
-		return String.format(Locale.ROOT,"%s (%.1f%%)",super.info(), phase*100); 
+		return String.format(Locale.ROOT,"%s (%.1f%%)",super.info(), PHASE*100); 
 	}
 	
 	

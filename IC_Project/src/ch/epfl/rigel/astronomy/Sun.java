@@ -27,15 +27,21 @@ public final class Sun extends CelestialObject {
 	public Sun(EclipticCoordinates eclipticPos, EquatorialCoordinates equatorialPos, float angularSize, float meanAnomaly) {
 		super(defaultName, equatorialPos, angularSize, defaultMagnitude);
 		Objects.requireNonNull(eclipticPos);
-		this.eclipticPos = EclipticCoordinates.of(eclipticPos.lon(),eclipticPos.lat());
+		this.eclipticPos = eclipticPos;
 		this.meanAnomaly = meanAnomaly;
 	}
 	
+	/**
+	 * @return the ecliptic coordinates of the sun
+	 */
 	public EclipticCoordinates eclipticPos() {
 	    
 	   return  EclipticCoordinates.of(eclipticPos.lon(),eclipticPos.lat());
 	}
 	
+	/**
+	 * @return the sun's mean anomaly
+	 */
 	public double meanAnomaly() {
 		return meanAnomaly;
 	}

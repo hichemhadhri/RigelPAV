@@ -58,7 +58,7 @@ public final class StereographicProjection implements Function<HorizontalCoordin
         double sinD = Math.sin(azAlt.az()-alpha);
         double cosA=Math.cos(azAlt.alt());
         double sinA = Math.sin(azAlt.alt()); 
-        double d =1/(1+Math.sin(azAlt.alt())*sinC+Math.cos(azAlt.alt())*cosC*cosD);
+        double d =1/(1+sinA*sinC+Math.cos(azAlt.alt())*cosC*cosD);
         return CartesianCoordinates.of(d*cosA*sinD,d*(sinA*cosC-cosA*sinC*cosD)) ; 
     }
     
@@ -69,10 +69,10 @@ public final class StereographicProjection implements Function<HorizontalCoordin
     public HorizontalCoordinates inverseApply(CartesianCoordinates xy) {
         if(xy.x()==0 && xy.y()==0)
             return HorizontalCoordinates.of(Angle.normalizePositive(alpha), centre.alt()); 
-    
         double p =Math.sqrt( Math.pow( xy.x() , 2 ) + Math.pow( xy.y() , 2 ) );
-        double sinc = 2 * p / ( Math.pow( p , 2 ) + 1 );
-        double cosc = ( 1 - Math.pow( p , 2 ) ) / ( Math.pow( p, 2 ) + 1 ); 
+        double psqr =  Math.pow( p , 2 );
+        double sinc = 2 * p / ( psqr + 1 );
+        double cosc = ( 1 - psqr) / ( psqr + 1 ); 
         double alp = Math.atan2( ( xy.x() * sinc ) ,( p * cosC * cosc - xy.y() * sinC * sinc ) ) + alpha;
         double ang = Math.asin( cosc * sinC + ( ( xy.y() * sinc * cosC ) / p ) );
         return HorizontalCoordinates.of(Angle.normalizePositive(alp), ang); 

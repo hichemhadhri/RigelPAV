@@ -34,20 +34,25 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 		EquatorialCoordinates coord;
 		double magnitude;
 		double bvColor;
-		reader.readLine(); //Skipping the first line that contains the column names
-		while(reader.ready()) {
-			starElements = reader.readLine().split(",");
-			starHippar = Integer.parseInt(replaceEmpty(starElements[DatabaseColumn.HIP.ordinal()],"0"));
-			starName = replaceEmpty(starElements[DatabaseColumn.PROPER.ordinal()],
-					replaceEmpty(starElements[DatabaseColumn.BAYER.ordinal()],"?")+" "+starElements[DatabaseColumn.CON.ordinal()]);
-			coord = EquatorialCoordinates.of(Double.parseDouble(starElements[DatabaseColumn.RARAD.ordinal()]), Double.parseDouble(starElements[DatabaseColumn.DECRAD.ordinal()]));
-			magnitude = Double.parseDouble(replaceEmpty(starElements[DatabaseColumn.MAG.ordinal()],"0"));
-			bvColor = Double.parseDouble(replaceEmpty(starElements[DatabaseColumn.CI.ordinal()],"0"));
-			star = new Star(starHippar,starName,coord,(float)magnitude,(float)bvColor);
-			builder.addStar(star);
+		try {
+			reader.readLine(); //Skipping the first line that contains the column names
+			while(reader.ready()) {
+				starElements = reader.readLine().split(",");
+				starHippar = Integer.parseInt(replaceEmpty(starElements[DatabaseColumn.HIP.ordinal()],"0"));
+				starName = replaceEmpty(starElements[DatabaseColumn.PROPER.ordinal()],
+						replaceEmpty(starElements[DatabaseColumn.BAYER.ordinal()],"?")+" "+starElements[DatabaseColumn.CON.ordinal()]);
+				coord = EquatorialCoordinates.of(Double.parseDouble(starElements[DatabaseColumn.RARAD.ordinal()]), Double.parseDouble(starElements[DatabaseColumn.DECRAD.ordinal()]));
+				magnitude = Double.parseDouble(replaceEmpty(starElements[DatabaseColumn.MAG.ordinal()],"0"));
+				bvColor = Double.parseDouble(replaceEmpty(starElements[DatabaseColumn.CI.ordinal()],"0"));
+				star = new Star(starHippar,starName,coord,(float)magnitude,(float)bvColor);
+				builder.addStar(star);
+			}
+			
+		}catch(IOException exception) {
+			exception.printStackTrace();
+		}finally {
+			reader.close();			
 		}
-		reader.close();
-		
 	}
 	private String replaceEmpty(String original,String replacement) {
 		return original.length() == 0 ? replacement : original;
