@@ -5,7 +5,6 @@ import java.util.Locale;
 import ch.epfl.rigel.Preconditions;
 import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
-import ch.epfl.rigel.math.Interval;
 import ch.epfl.rigel.math.RightOpenInterval;
 
 /**
@@ -15,8 +14,9 @@ import ch.epfl.rigel.math.RightOpenInterval;
  * @author Khalil Haroun Achache (300350)
  */
 public class HorizontalCoordinates extends SphericalCoordinates {
-    private static final Interval AZINTERVAL = RightOpenInterval.of(0,Angle.TAU);
-    private static final Interval ALTINTERVAL = ClosedInterval.of(-Angle.TAU/4,Angle.TAU/4);
+	private static final RightOpenInterval AZ_INTERVAL_DEG = RightOpenInterval.of(0,360);
+    private static final RightOpenInterval AZ_INTERVAL = RightOpenInterval.of(0,Angle.TAU);
+    private static final ClosedInterval ALT_INTERVAL = ClosedInterval.of(-Angle.TAU/4,Angle.TAU/4);
 	private HorizontalCoordinates(double longtitude, double latitude) {
 		super(longtitude, latitude);
 	}
@@ -28,8 +28,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	 * @return a HorziontalCoordinates Object
 	 */
 	public static HorizontalCoordinates of(double az, double alt) {
-	    Preconditions.checkInInterval(AZINTERVAL, az);
-        Preconditions.checkInInterval(ALTINTERVAL, alt);
+	    Preconditions.checkInInterval(AZ_INTERVAL, az);
+        Preconditions.checkInInterval(ALT_INTERVAL, alt);
 		return new HorizontalCoordinates(az,alt);
 	}
 	
@@ -40,8 +40,8 @@ public class HorizontalCoordinates extends SphericalCoordinates {
      * @return a HorziontalCoordinates Object
      */
 	public static HorizontalCoordinates ofDeg(double azDeg, double altDeg) {
-	    Preconditions.checkInInterval(AZINTERVAL, Angle.ofDeg(azDeg));
-        Preconditions.checkInInterval(ALTINTERVAL, Angle.ofDeg(altDeg));
+	    Preconditions.checkInInterval(AZ_INTERVAL, Angle.ofDeg(azDeg));
+        Preconditions.checkInInterval(ALT_INTERVAL, Angle.ofDeg(altDeg));
 		return new HorizontalCoordinates(Angle.ofDeg(azDeg),Angle.ofDeg(altDeg));
 	}
 	
@@ -80,7 +80,7 @@ public class HorizontalCoordinates extends SphericalCoordinates {
 	public String azOctantName(String n, String e, String s, String w) {
 		String octants[] = {n,n+e,e,s+e,s,s+w,w,n+w};
 		for (int i = 0 ; i<8 ; ++i) {
-			if (RightOpenInterval.of(45*i, 45*(i+1)).contains(((RightOpenInterval)AZINTERVAL).reduce(azDeg()+22.5))){
+			if (RightOpenInterval.of(45*i, 45*(i+1)).contains(AZ_INTERVAL_DEG.reduce(azDeg()+22.5))){
 				return octants[i];
 			}
 		}

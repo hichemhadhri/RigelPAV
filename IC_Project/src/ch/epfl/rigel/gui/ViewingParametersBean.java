@@ -15,32 +15,53 @@ public class ViewingParametersBean {
 	private DoubleProperty fieldOfViewDeg;
 	private ObjectProperty<HorizontalCoordinates> center;
 
+	/**
+	 * ViewingParametersBean constructor
+	 */
 	public ViewingParametersBean() {
 		fieldOfViewDeg = new SimpleDoubleProperty();
 		center = new SimpleObjectProperty<>();
 	}
 
 
+	/** Getter for center property
+	 * @return center
+	 */
 	public ObjectProperty<HorizontalCoordinates> center() {
 		return center;
 	}
 
+	/** Getter for center coordinates
+	 * @return center
+	 */
 	public HorizontalCoordinates getCenter() {
 		return center.get();
 	}
 
+	/** center Setter
+	 * @param center
+	 */
 	public void setCenter(HorizontalCoordinates center) {
 		this.center.set(center);
 	}
 
+	/** Getter for fieldOfView property
+	 * @return
+	 */
 	public DoubleProperty fieldOfViewDeg() {
 		return fieldOfViewDeg;
 	}
+	/** Getter for fieldOfView
+	 * @return fieldOfView in degrees
+	 */
 	public double getFieldOfViewDeg() {
 		return fieldOfViewDeg.get();
 	}
 
 
+	/** fieldOfView Setter
+	 * @param fieldDeg
+	 */
 	public void setFieldOfViewDeg(double fieldDeg) {
 		this.fieldOfViewDeg.set(fieldDeg);
 	}

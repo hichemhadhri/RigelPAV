@@ -26,7 +26,7 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 
 	@Override
 	public void load(InputStream inputStream, Builder builder) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.US_ASCII));
+		
 		String[] starElements;
 		Star star;
 		String starName;
@@ -34,7 +34,7 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 		EquatorialCoordinates coord;
 		double magnitude;
 		double bvColor;
-		try {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream,StandardCharsets.US_ASCII))){
 			reader.readLine(); //Skipping the first line that contains the column names
 			while(reader.ready()) {
 				starElements = reader.readLine().split(",");
@@ -50,8 +50,6 @@ public enum HygDatabaseLoader implements StarCatalogue.Loader {
 			
 		}catch(IOException exception) {
 			exception.printStackTrace();
-		}finally {
-			reader.close();			
 		}
 	}
 	private String replaceEmpty(String original,String replacement) {

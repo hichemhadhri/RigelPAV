@@ -38,11 +38,11 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	private final double omega;
 	private final double e;
 	private final double a;
-	private final double i;
+	private final double cosi;
+	private final double sini;
 	private final double bigOmega;
 	private final double angularSize;
 	private final double magnitude;
-	private final double cs ;
 	
 	
 	private PlanetModel(String name, double tropicalYear, double epsilon, double omega, double e, double a , double i, double bigOmega, double angularSize, double magnitude) {
@@ -52,11 +52,12 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 		this.omega = Angle.ofDeg(omega);
 		this.e = e;
 		this.a = a;
-		this.i=Angle.ofDeg(i);
+		double irad = Angle.ofDeg(i);
+		this.cosi = Math.cos(irad);
+		this.sini = Math.sin(irad);
 		this.bigOmega = Angle.ofDeg(bigOmega);
 		this.angularSize = Angle.ofArcsec(angularSize);
 		this.magnitude = magnitude;
-		this.cs=Math.cos(i) * Math.sin(i);
 	}
 	
 	
@@ -100,14 +101,14 @@ public enum PlanetModel implements CelestialObjectModel<Planet> {
 	}
 	
 	private double getLatHelio(double l) {
-		return Math.asin(Math.sin(l-bigOmega) * Math.sin(i));
+		return Math.asin(Math.sin(l-bigOmega) * sini);
 	}
 	
 	private double getRp(double r , double psi) {
 		return r * Math.cos(psi);
 	}
 	private double getLp(double l) {
-		return Math.atan2(Math.sin(l-bigOmega) * Math.cos(i) ,Math.cos(l-bigOmega) )+ bigOmega;
+		return Math.atan2(Math.sin(l-bigOmega) * cosi ,Math.cos(l-bigOmega) )+ bigOmega;
 	}
 	
 	

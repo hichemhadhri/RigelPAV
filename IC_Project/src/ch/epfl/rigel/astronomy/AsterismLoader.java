@@ -25,10 +25,9 @@ public enum AsterismLoader implements StarCatalogue.Loader {
 	@Override
 	public void load(InputStream inputStream, Builder builder) throws IOException{
 		Map<Integer, Star> starById = starById(builder);
-		BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.US_ASCII));
 		String[] asterismElements;
 		List<Star> stars = new ArrayList<Star>();
-		try {
+		try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.US_ASCII))){
 			do {
 				asterismElements = reader.readLine().split(",");
 				stars.clear();
@@ -40,8 +39,6 @@ public enum AsterismLoader implements StarCatalogue.Loader {
 			} while (reader.ready());
 		}catch (IOException exception) {
 			exception.printStackTrace();
-		}finally {
-			reader.close();			
 		}
 	}
 
