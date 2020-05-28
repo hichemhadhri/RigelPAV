@@ -2,8 +2,13 @@ package ch.epfl.rigel.gui;
 
 import java.time.Duration;
 
-import ch.epfl.rigel.math.Angle;
 
+
+/**NamedTimeAccelerator enum
+ * @author Mohamed Hichem Hadhri (300434)
+ * @author Khalil Haroun Achache (300350)
+ *
+ */
 public enum NamedTimeAccelerator {
   TIMES_1("1x",TimeAccelerator.continuous(1)),
   TIMES_30("30x",TimeAccelerator.continuous(30)),
@@ -22,10 +27,16 @@ public enum NamedTimeAccelerator {
         
     }
     
+    /**Name getter
+     * @return name
+     */
     public String  getName() {
         return this.nom; 
     }
     
+    /**Accelerator getter
+     * @return time Accelerator
+     */
     public TimeAccelerator getAccelerator() {
         return this.accelerator;
     }
