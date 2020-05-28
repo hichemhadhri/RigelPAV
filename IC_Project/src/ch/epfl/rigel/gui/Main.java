@@ -45,6 +45,14 @@ import javafx.util.converter.NumberStringConverter;
  *
  */
 public class Main extends Application {
+    
+  private   ZonedDateTime when;
+  private   DateTimeBean dateTimeBean;
+  private   ObserverLocationBean observerLocationBean ;
+  private   ViewingParametersBean viewingParametersBean;
+  private   SkyCanvasManager canvasManager;
+  private   TimeAnimator ta;
+  private   Canvas sky;
 
     public static void main(String[] args) {
         launch(args);
@@ -64,33 +72,33 @@ public class Main extends Application {
                     .build();
             hs.close();
 
-            ZonedDateTime when = ZonedDateTime
+            when = ZonedDateTime
                     .parse("2020-02-17T20:15:00+01:00");
-            DateTimeBean dateTimeBean = new DateTimeBean();
+             dateTimeBean = new DateTimeBean();
             dateTimeBean.setZonedDateTime(when);
 
-            ObserverLocationBean observerLocationBean = new ObserverLocationBean();
+            observerLocationBean = new ObserverLocationBean();
             observerLocationBean
                     .setCoordinates(GeographicCoordinates.ofDeg(6.57, 46.52));
 
-            ViewingParametersBean viewingParametersBean = new ViewingParametersBean();
+             viewingParametersBean = new ViewingParametersBean();
             viewingParametersBean.setCenter(
                     HorizontalCoordinates.ofDeg(180.000000000001, 15));
             viewingParametersBean.setFieldOfViewDeg(100);
 
-            SkyCanvasManager canvasManager = new SkyCanvasManager(catalogue,
+             canvasManager = new SkyCanvasManager(catalogue,
                     dateTimeBean, observerLocationBean, viewingParametersBean);
 
-            TimeAnimator ta = new TimeAnimator(dateTimeBean);
+             ta = new TimeAnimator(dateTimeBean);
             ta.setAccelerator(NamedTimeAccelerator.TIMES_3000.getAccelerator());
 
-            Canvas sky = canvasManager.canvas();
+             sky = canvasManager.canvas();
             Pane ciel = new Pane(sky);
             BorderPane root = new BorderPane();
-            root.setTop(drawControlBar(observerLocationBean, dateTimeBean, ta));
+            root.setTop(drawControlBar());
             root.setCenter(ciel);
             root.setBottom(drawInfos(viewingParametersBean, canvasManager));
-
+         
             sky.widthProperty().bind(ciel.widthProperty());
             sky.heightProperty().bind(ciel.heightProperty());
 
@@ -107,8 +115,7 @@ public class Main extends Application {
 
     }
 
-    private HBox drawControlBar(ObserverLocationBean obs, DateTimeBean db,
-            TimeAnimator ta) throws IOException {
+    private HBox drawControlBar() throws IOException {
 
         // creating the hbox postion
         Label longitude = new Label("Longitude (°) :");
@@ -120,14 +127,14 @@ public class Main extends Application {
         lonTextField.setTextFormatter(lonTF);
         lonTextField
                 .setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
-        lonTF.valueProperty().bindBidirectional(obs.lonDeg());
+        lonTF.valueProperty().bindBidirectional(observerLocationBean.lonDegProperty());
         TextField latTextField = new TextField();
         TextFormatter<Number> latTF = createTextFormatter(false);
         latTextField.setTextFormatter(latTF);
         latTextField
                 .setStyle("-fx-pref-width: 60; -fx-alignment: baseline-right;");
 
-        latTF.valueProperty().bindBidirectional(obs.latDeg());
+        latTF.valueProperty().bindBidirectional(observerLocationBean.latDegProperty());
 
         HBox position = new HBox(longitude, lonTextField, latitude,
                 latTextField);
@@ -139,15 +146,14 @@ public class Main extends Application {
 
         DatePicker dp = new DatePicker();
         dp.setStyle("-fx-pref-width: 120;");
-        dp.valueProperty().bindBidirectional(db.dateProperty());
-        dp.setFocusTraversable(false);
-
+        dp.valueProperty().bindBidirectional(dateTimeBean.dateProperty());
+      
         Label hour = new Label("Heure :");
 
         TextField hourField = new TextField();
         hourField.setStyle(
                 "-fx-pref-width: 75;" + "-fx-alignment: baseline-right;");
-        hourField.setFocusTraversable(false);
+        
 
         DateTimeFormatter hmsFormatter = DateTimeFormatter
                 .ofPattern("HH:mm:ss");
@@ -156,7 +162,7 @@ public class Main extends Application {
         TextFormatter<LocalTime> timeFormatter = new TextFormatter<LocalTime>(
                 stringConverter);
         hourField.setTextFormatter(timeFormatter);
-        timeFormatter.valueProperty().bindBidirectional(db.timeProperty());
+        timeFormatter.valueProperty().bindBidirectional(dateTimeBean.timeProperty());
 
         ObservableList<String> list = FXCollections
                 .observableArrayList(ZoneId.getAvailableZoneIds());
@@ -169,8 +175,8 @@ public class Main extends Application {
         ComboBox<ZoneId> zone = new ComboBox<ZoneId>(zoneList);
 
         zone.setStyle("-fx-pref-width: 180");
-        zone.valueProperty().bindBidirectional(db.zoneProperty());
-        zone.setFocusTraversable(false);
+        zone.valueProperty().bindBidirectional(dateTimeBean.zoneProperty());
+      
         HBox time = new HBox(date, dp, hour, hourField, zone);
         time.setStyle(
                 "-fx-spacing: inherit;\n" + "-fx-alignment: baseline-left;");
@@ -237,7 +243,7 @@ public class Main extends Application {
 
         Text gauche = new Text();
         gauche.textProperty().bind(Bindings.format(Locale.ROOT,
-                "Champ de vue : %.1f°", vp.fieldOfViewDeg()));
+                "Champ de vue : %.1f°", vp.fieldOfViewDegProperty()));
 
         Text center = new Text();
         center.textProperty().bind(sm.objectUnderMouseProperty().asString());

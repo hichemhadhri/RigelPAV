@@ -28,7 +28,7 @@ public class ObserverLocationBean {
 	/** Getter for lonDeg property
 	 * @return longitude in degrees property
 	 */
-	public DoubleProperty lonDeg() {
+	public DoubleProperty lonDegProperty() {
 		return lonDeg;
 	}
 	/** lonDeg Setter
@@ -47,7 +47,7 @@ public class ObserverLocationBean {
 	/** Getter for latDeg property
 	 * @return latitude in degrees property
 	 */
-	public DoubleProperty latDeg() {
+	public DoubleProperty latDegProperty() {
 		return latDeg;
 	}
 	/** latDeg setter
@@ -70,7 +70,7 @@ public class ObserverLocationBean {
 		return coordinates;
 	}
 	
-	/** coordiantes Setter
+	/** coordinates Setter
 	 * @param coords
 	 */
 	public void setCoordinates(GeographicCoordinates coords) {

@@ -27,7 +27,7 @@ public class ViewingParametersBean {
 	/** Getter for center property
 	 * @return center
 	 */
-	public ObjectProperty<HorizontalCoordinates> center() {
+	public ObjectProperty<HorizontalCoordinates> centerProperty() {
 		return center;
 	}
 
@@ -48,7 +48,7 @@ public class ViewingParametersBean {
 	/** Getter for fieldOfView property
 	 * @return
 	 */
-	public DoubleProperty fieldOfViewDeg() {
+	public DoubleProperty fieldOfViewDegProperty() {
 		return fieldOfViewDeg;
 	}
 	/** Getter for fieldOfView

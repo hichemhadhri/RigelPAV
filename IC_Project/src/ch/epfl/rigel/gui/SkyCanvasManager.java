@@ -66,12 +66,12 @@ public class SkyCanvasManager {
 		//Creating bindings
 		projection = Bindings.createObjectBinding(() -> {
 			return new StereographicProjection(vpBean.getCenter());
-		}, vpBean.center());
+		}, vpBean.centerProperty());
 		
 		planeToCanvas = Bindings.createObjectBinding(() -> {
 			double scale = calculateScale(canvas.widthProperty().get(),vpBean.getFieldOfViewDeg(),projection.get());
 			return Transform.affine(scale, 0, 0, -scale, canvas.widthProperty().get()/2, canvas.heightProperty().get()/2);
-		}, canvas.widthProperty(),canvas.heightProperty(), projection,vpBean.fieldOfViewDeg());
+		}, canvas.widthProperty(),canvas.heightProperty(), projection,vpBean.fieldOfViewDegProperty());
 		
 		observedSky = Bindings.createObjectBinding(() -> {
 			return new ObservedSky(dtBean.getZonedDateTime(), olBean.getCoordinates(), projection.get(), catalogue);
