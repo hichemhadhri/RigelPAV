@@ -3,7 +3,7 @@ package ch.epfl.rigel.gui;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import ch.epfl.rigel.math.Angle;
+
 
 /**
  * TimeAccelerator Interface
