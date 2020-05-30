@@ -30,6 +30,7 @@ public class ViewingParametersBean {
 	}
 
 	public void setCenter(HorizontalCoordinates center) {
+		System.out.println(center.az()+" "+center.alt());
 		this.center.set(center);
 	}
 

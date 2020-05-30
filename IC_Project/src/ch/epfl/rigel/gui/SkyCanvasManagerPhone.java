@@ -1,10 +1,14 @@
 package ch.epfl.rigel.gui;
 
+
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
+import ch.epfl.rigel.bonus.UDPServer;
 import ch.epfl.rigel.coordinates.CartesianCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.coordinates.StereographicProjection;
@@ -19,7 +23,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.transform.Transform;
 
-public class SkyCanvasManager {
+public class SkyCanvasManagerPhone extends SkyCanvasManager {
 	private final static int MAX_OBJECTS = 10;
 	private final static double HORIZONTAL_INC_DEG = 10;
 	private final static double VERTICAL_INC_DEG = 5;
@@ -37,9 +41,26 @@ public class SkyCanvasManager {
 	private Canvas canvas;
 	private SkyCanvasPainter painter;
 
-	public SkyCanvasManager(StarCatalogue catalogue, DateTimeBean dtBean, ObserverLocationBean olBean,
-			ViewingParametersBean vpBean) {
-		
+	public SkyCanvasManagerPhone(StarCatalogue catalogue, DateTimeBean dtBean, ObserverLocationBean olBean,
+			ViewingParametersBean vpBean,UDPServer server) {
+		super(catalogue,dtBean,olBean,vpBean);
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+            	try {
+            		System.out.println(server.getCoords());
+            		vpBean.setCenter(server.getCoords());
+            		
+            	}catch(Exception e) {
+            		System.out.println(e);
+            	}
+            }
+          };
+        Timer timer = new Timer();
+        long delay = 0;
+        long intevalPeriod = 1 * 100;
+        timer.scheduleAtFixedRate(task, delay,
+                intevalPeriod);
 		canvas = new Canvas(600, 800);
 		painter = new SkyCanvasPainter(canvas);
 		mousePosition = new SimpleObjectProperty<CartesianCoordinates>(CartesianCoordinates.of(0,0));
@@ -69,26 +90,6 @@ public class SkyCanvasManager {
 		mouseAltDeg = Bindings.createDoubleBinding(() -> {
 			return Angle.toDeg(mouseHorizontalPosition.get().alt());
 		}, mouseHorizontalPosition);
-
-		canvas.setOnKeyPressed(key -> {
-			if (key.getCode() == KeyCode.LEFT) {
-				double val=(vpBean.getCenter().azDeg() - HORIZONTAL_INC_DEG);
-				if (val<0) val+=360;
-				vpBean.setCenter(HorizontalCoordinates.ofDeg(val%360,
-						vpBean.getCenter().altDeg()));
-			} else if (key.getCode() == KeyCode.RIGHT) {
-				vpBean.setCenter(HorizontalCoordinates.ofDeg((vpBean.getCenter().azDeg() + HORIZONTAL_INC_DEG) % 360,
-						vpBean.getCenter().altDeg()));
-			} else if (key.getCode() == KeyCode.UP) {
-				double clampedValue = Math.min(90, Math.max(5, vpBean.getCenter().altDeg() + VERTICAL_INC_DEG));
-				vpBean.setCenter(HorizontalCoordinates.ofDeg(vpBean.getCenter().azDeg(), clampedValue));
-
-			} else if (key.getCode() == KeyCode.DOWN) {
-				double clampedValue = Math.min(90, Math.max(5, vpBean.getCenter().altDeg() - VERTICAL_INC_DEG));
-				vpBean.setCenter(HorizontalCoordinates.ofDeg(vpBean.getCenter().azDeg(), clampedValue));
-			}
-			key.consume();
-		});
 		canvas.setOnMousePressed(event -> {
 			if (event.isPrimaryButtonDown()) {
 				canvas.requestFocus();
@@ -111,6 +112,25 @@ public class SkyCanvasManager {
 		planeToCanvas.addListener((o)->{
 			
 			painter.drawAll(observedSky.get(), planeToCanvas.get(), projection.get());
+		});
+		canvas.setOnKeyPressed(key -> {
+			if (key.getCode() == KeyCode.LEFT) {
+				double val=(vpBean.getCenter().azDeg() - HORIZONTAL_INC_DEG);
+				if (val<0) val+=360;
+				vpBean.setCenter(HorizontalCoordinates.ofDeg(val%360,
+						vpBean.getCenter().altDeg()));
+			} else if (key.getCode() == KeyCode.RIGHT) {
+				vpBean.setCenter(HorizontalCoordinates.ofDeg((vpBean.getCenter().azDeg() + HORIZONTAL_INC_DEG) % 360,
+						vpBean.getCenter().altDeg()));
+			} else if (key.getCode() == KeyCode.UP) {
+				double clampedValue = Math.min(90, Math.max(5, vpBean.getCenter().altDeg() + VERTICAL_INC_DEG));
+				vpBean.setCenter(HorizontalCoordinates.ofDeg(vpBean.getCenter().azDeg(), clampedValue));
+
+			} else if (key.getCode() == KeyCode.DOWN) {
+				double clampedValue = Math.min(90, Math.max(5, vpBean.getCenter().altDeg() - VERTICAL_INC_DEG));
+				vpBean.setCenter(HorizontalCoordinates.ofDeg(vpBean.getCenter().azDeg(), clampedValue));
+			}
+			key.consume();
 		});
 		
 		//ajoutiha bech nupdati changement naarech ken fama makhir
