@@ -21,7 +21,6 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
@@ -74,10 +73,10 @@ public class Main extends Application {
             viewingParametersBean.setFieldOfViewDeg(100);
             UDPServer server = null;
             try {
-            	server=new UDPServer(2900);
+            	server=new UDPServer(2900,viewingParametersBean);
+            	server.setDaemon(true);
             	server.start();
             } catch (SocketException e) {
-            	// TODO Auto-generated catch block
             	e.printStackTrace();
             }
 

@@ -1,10 +1,6 @@
 package ch.epfl.rigel.gui;
 
 
-import java.util.Optional;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import ch.epfl.rigel.astronomy.CelestialObject;
 import ch.epfl.rigel.astronomy.ObservedSky;
 import ch.epfl.rigel.astronomy.StarCatalogue;
@@ -44,23 +40,6 @@ public class SkyCanvasManagerPhone extends SkyCanvasManager {
 	public SkyCanvasManagerPhone(StarCatalogue catalogue, DateTimeBean dtBean, ObserverLocationBean olBean,
 			ViewingParametersBean vpBean,UDPServer server) {
 		super(catalogue,dtBean,olBean,vpBean);
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-            	try {
-            		System.out.println(server.getCoords());
-            		vpBean.setCenter(server.getCoords());
-            		
-            	}catch(Exception e) {
-            		System.out.println(e);
-            	}
-            }
-          };
-        Timer timer = new Timer();
-        long delay = 0;
-        long intevalPeriod = 1 * 100;
-        timer.scheduleAtFixedRate(task, delay,
-                intevalPeriod);
 		canvas = new Canvas(600, 800);
 		painter = new SkyCanvasPainter(canvas);
 		mousePosition = new SimpleObjectProperty<CartesianCoordinates>(CartesianCoordinates.of(0,0));
