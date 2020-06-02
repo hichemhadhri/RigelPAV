@@ -2,6 +2,7 @@ package ch.epfl.rigel.gui;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.SocketException;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -13,6 +14,7 @@ import java.util.function.UnaryOperator;
 import ch.epfl.rigel.astronomy.AsterismLoader;
 import ch.epfl.rigel.astronomy.HygDatabaseLoader;
 import ch.epfl.rigel.astronomy.StarCatalogue;
+import ch.epfl.rigel.bonus.UDPServer;
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import javafx.application.Application;
@@ -85,6 +87,14 @@ public class Main extends Application {
             viewingParametersBean.setCenter(
                     HorizontalCoordinates.ofDeg(180.000000000001, 15));
             viewingParametersBean.setFieldOfViewDeg(100);
+            UDPServer server = null;
+            try {
+            	server=new UDPServer(2900,viewingParametersBean);
+            	server.setDaemon(true);
+            	server.start();
+            } catch (SocketException e) {
+            	e.printStackTrace();
+            }
 
              canvasManager = new SkyCanvasManager(catalogue,
                     dateTimeBean, observerLocationBean, viewingParametersBean);
