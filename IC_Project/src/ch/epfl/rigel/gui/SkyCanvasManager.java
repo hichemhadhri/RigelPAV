@@ -14,6 +14,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.binding.DoubleBinding;
 import javafx.beans.binding.ObjectBinding;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
@@ -44,7 +45,8 @@ public class SkyCanvasManager {
 	private ObjectBinding<ObservedSky> observedSky;
 	private ObjectProperty<CartesianCoordinates> mousePosition;
 	private ObjectBinding<HorizontalCoordinates> mouseHorizontalPosition;
-
+	// mode property 
+    private SimpleBooleanProperty mode; 
 	private Canvas canvas;
 	private SkyCanvasPainter painter;
 
@@ -58,6 +60,8 @@ public class SkyCanvasManager {
 			ViewingParametersBean vpBean) {
 		
 		canvas = new Canvas(600, 800);
+		
+		mode = new SimpleBooleanProperty(true); //Initialized to true
 		
 		painter = new SkyCanvasPainter(canvas);
 		
@@ -76,17 +80,26 @@ public class SkyCanvasManager {
 		observedSky = Bindings.createObjectBinding(() -> {
 			return new ObservedSky(dtBean.getZonedDateTime(), olBean.getCoordinates(), projection.get(), catalogue);
 		}, olBean.coordinates(), dtBean.dateProperty(), dtBean.timeProperty(), dtBean.zoneProperty(), projection);
-
+		 DoubleBinding newR =Bindings.createDoubleBinding(
+	                ()->{
+	                    try {
+	                        return planeToCanvas.get().inverseDeltaTransform(MAX_OBJECTS,0).magnitude();
+	                    }
+	                    catch(NonInvertibleTransformException e) {
+	                        return 0.0;
+	                    }
+	                },
+	                planeToCanvas);
 		objectUnderMouse = Bindings.createObjectBinding(() -> {
 			try {
 				Point2D coordMouse = planeToCanvas.get().inverseTransform(mousePosition.get().x(),mousePosition.get().y());
 				CartesianCoordinates coords = CartesianCoordinates.of(coordMouse.getX(), coordMouse.getY());
-				return observedSky.get().ObjectClosestTo(coords, MAX_OBJECTS).get();
+				return observedSky.get().ObjectClosestTo(coords, newR.get()).orElse(null);
 				
 			} catch(NonInvertibleTransformException e) {
 				return null;
 			}
-		}, observedSky, mousePosition, planeToCanvas);
+		}, newR,observedSky, mousePosition, planeToCanvas);
 		
 		mouseHorizontalPosition = Bindings.createObjectBinding(() -> {
 			try {
@@ -118,6 +131,7 @@ public class SkyCanvasManager {
 
 		//Managing user inputs
 		canvas.setOnKeyPressed(key -> {
+		  if(mode.get()) { // if navigation mode is "clavier" then take inputs into consideration 
 			if (key.getCode() == KeyCode.LEFT) {
 				vpBean.setCenter(HorizontalCoordinates.ofDeg(AZ_INTERVAL.reduce(vpBean.getCenter().azDeg() - HORIZONTAL_INC_DEG),
 						vpBean.getCenter().altDeg()));
@@ -130,6 +144,7 @@ public class SkyCanvasManager {
 			} else if (key.getCode() == KeyCode.DOWN) {
 				vpBean.setCenter(HorizontalCoordinates.ofDeg(vpBean.getCenter().azDeg(), ALT_INTERVAL.clip(vpBean.getCenter().altDeg() - VERTICAL_INC_DEG)));
 			}
+		  }
 			key.consume();
 		});
 		canvas.setOnMousePressed(event -> {
@@ -164,6 +179,14 @@ public class SkyCanvasManager {
         });
 		
 		
+	}
+	
+	
+	/**modeProperty getter 
+	 * @return modeProperty
+	 */
+	public SimpleBooleanProperty modeProperty() {
+	    return mode; 
 	}
 	
 	/**  Getter for objectUnderMouseProperty

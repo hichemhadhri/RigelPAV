@@ -20,6 +20,8 @@ import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
+
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
@@ -34,10 +36,12 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.control.ToggleGroup;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -60,7 +64,7 @@ import javafx.util.converter.NumberStringConverter;
  */
 public class Main extends Application {
     
-  private   ZonedDateTime when;
+  
   private   DateTimeBean dateTimeBean;
   private   ObserverLocationBean observerLocationBean ;
   private   ViewingParametersBean viewingParametersBean;
@@ -68,7 +72,7 @@ public class Main extends Application {
   private   TimeAnimator ta;
   private   Canvas sky;
   private   UDPServer server ;
-
+ 
     public static void main(String[] args) {
         launch(args);
     }
@@ -86,8 +90,8 @@ public class Main extends Application {
                             AsterismLoader.INSTANCE)
                     .build();
             hs.close();
-
-         
+       
+           
              dateTimeBean = new DateTimeBean();
             dateTimeBean.setZonedDateTime(ZonedDateTime.now());
 
@@ -121,9 +125,9 @@ public class Main extends Application {
             
             root.setTop(top);
             root.setCenter(ciel);
-            root.setBottom(drawInfos(viewingParametersBean, canvasManager));
+            root.setBottom(drawInfos());
             
-            /////////////////////////////////////////////////
+          
        
             sky.widthProperty().bind(ciel.widthProperty());
             sky.heightProperty().bind(ciel.heightProperty());
@@ -274,6 +278,9 @@ public class Main extends Application {
       
       Label l11 = new Label("scannez ce QR Code "); 
       l11.setStyle("-fx-font-weight: normal;"); 
+      Label l0 = new Label("2.basculez le mode de navigation vers téléphone");
+      l0.setStyle("-fx-font-weight: bold;");
+      Label l01 = new Label("valeur par défaut est le clavier ");
       
       Label l2 = new Label ("2.Entrez l'adresse IP de votre PC ainsi que le port  : ");
       l2.setStyle("-fx-font-weight: bold;"); 
@@ -286,7 +293,7 @@ public class Main extends Application {
       HBox imCon = new HBox(tuto2); 
       imCon.setAlignment(Pos.BASELINE_CENTER);
       
-      //
+     
       Label l3 =new Label("3.Checkez synchroniser pour envoyer les données de votre sensor et Coords géo pour envoyer vos coordonnées au PC");
       l3.setStyle("-fx-font-weight: bold;");
       Label l31 = new Label("vous devez voir le status basculer de non connecté à connecté dans les deux applications");
@@ -300,42 +307,71 @@ public class Main extends Application {
       Label notice = new Label("NB: l'application est disponible seulement sur Android , et vous devez avoir l'orientation sensor activé");
       notice.setStyle("-fx-text-decoration: underline;");
       
-      setupH.getChildren().addAll(l1,l11,l2,l21,imCon,l3,l31,imCon2,l4,notice); 
+      setupH.getChildren().addAll(l1,l11,l0,l01,l2,l21,imCon,l3,l31,imCon2,l4,notice); 
      
       setup.setContent(setupH);
     
       customMenuItem.setContent(setup);
-      
+      customMenuItem.setStyle("-fx-focus-color: transparent;");
       customMenuItem.setHideOnClick(false);
       subMenu.getItems().add(customMenuItem);
       aide.getItems().add(subMenu); 
       
-        MenuBar menuBar = new MenuBar(aide);
-
+      Menu navig = new Menu("mode de navigation"); 
+      CustomMenuItem navigItem = new CustomMenuItem();
+      RadioButton clavier= new RadioButton("clavier");
+      clavier.setTextFill(Color.BLACK);
+    
+     
+      clavier.setStyle("-fx-focus-color: transparent;");
+      RadioButton telephone = new RadioButton("téléphone"); 
+      telephone.setTextFill(Color.BLACK);
+      telephone.setStyle("-fx-focus-color: transparent;");
+      ToggleGroup tg = new ToggleGroup(); 
+      clavier.setToggleGroup(tg);
+      telephone.setToggleGroup(tg);
+      tg.selectToggle(clavier);
+      //binding with udp server and skycanvasmanger mode properties
+      clavier.selectedProperty().bindBidirectional(canvasManager.modeProperty());
+      telephone.selectedProperty().bindBidirectional(server.modeProperty());
+      
+      VBox rCon = new VBox(clavier,telephone); 
+      navigItem.setContent(rCon);
+      navigItem.setHideOnClick(false);
+      
+      navig.getItems().add(navigItem);
+      
+        MenuBar menuBar = new MenuBar(aide,navig);
+          
    
         
         
         return menuBar ; 
     }
 
-    private BorderPane drawInfos(ViewingParametersBean vp,
-            SkyCanvasManager sm) {
+    private BorderPane drawInfos() {
 
         BorderPane infos = new BorderPane();
         infos.setStyle("-fx-padding: 4;-fx-background-color: white;");
 
         Text gauche1 = new Text();
         gauche1.textProperty().bind(Bindings.format(Locale.ROOT,
-                "Champ de vue : %.1f°", vp.fieldOfViewDegProperty()));
+                "Champ de vue : %.1f°", viewingParametersBean.fieldOfViewDegProperty()));
 
         Text center = new Text();
-        center.textProperty().bind(sm.objectUnderMouseProperty().asString());
-
+        
+        
+        canvasManager.objectUnderMouseProperty().addListener(e->{
+        if(canvasManager.objectUnderMouseProperty().getValue()!=null) 
+            center.setText(canvasManager.objectUnderMouseProperty().get().info());
+        else 
+            center.setText("");});
+      
         Text gauche2 = new Text();
         gauche2.textProperty()
                 .bind(Bindings.format(Locale.ROOT,
                         "Azimut : %.2f°, hauteur : %.2f°",
-                        sm.mouseAzDegProperty(), sm.mouseAltDegProperty()));
+                        canvasManager.mouseAzDegProperty(), canvasManager.mouseAltDegProperty()));
 
         HBox gauche = new HBox(gauche1,new Separator(Orientation.VERTICAL),gauche2); 
         gauche.setSpacing(2); 
@@ -344,10 +380,7 @@ public class Main extends Application {
         Text droite2 = new Text("Adresse IP : " + server.getIp());
         Text droite3 = new Text(); 
         droite3.textProperty().bind(Bindings.format(Locale.ROOT, "%s",server.statusProperty()));
-        if(droite3.getText()=="connecté")
-            droite3.setFill(Color.GREEN);
-        else 
-            droite3.setFill(Color.RED);
+      droite3.fillProperty().bind(server.colorProperty());
         
         droite3.setStyle("-fx-font-weight: bold;");
         HBox droite = new HBox(droite1,new Separator(Orientation.VERTICAL),droite2,new Separator(Orientation.VERTICAL),droite4,droite3); 
@@ -358,6 +391,8 @@ public class Main extends Application {
         infos.setCenter(center);
         return infos;
     }
+  
+    
 
     private TextFormatter<Number> createTextFormatter(boolean bool) {
         NumberStringConverter stringConverter = new NumberStringConverter(
