@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.function.UnaryOperator;
 
+
 import ch.epfl.rigel.astronomy.AsterismLoader;
 import ch.epfl.rigel.astronomy.HygDatabaseLoader;
 import ch.epfl.rigel.astronomy.StarCatalogue;
@@ -21,18 +22,29 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Separator;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -55,6 +67,7 @@ public class Main extends Application {
   private   SkyCanvasManager canvasManager;
   private   TimeAnimator ta;
   private   Canvas sky;
+  private   UDPServer server ;
 
     public static void main(String[] args) {
         launch(args);
@@ -74,10 +87,9 @@ public class Main extends Application {
                     .build();
             hs.close();
 
-            when = ZonedDateTime
-                    .parse("2020-02-17T20:15:00+01:00");
+         
              dateTimeBean = new DateTimeBean();
-            dateTimeBean.setZonedDateTime(when);
+            dateTimeBean.setZonedDateTime(ZonedDateTime.now());
 
             observerLocationBean = new ObserverLocationBean();
             observerLocationBean
@@ -87,7 +99,7 @@ public class Main extends Application {
             viewingParametersBean.setCenter(
                     HorizontalCoordinates.ofDeg(180.000000000001, 15));
             viewingParametersBean.setFieldOfViewDeg(100);
-            UDPServer server = null;
+          
             try {
             	server=new UDPServer(2900,viewingParametersBean,observerLocationBean);
             	server.setDaemon(true);
@@ -105,10 +117,14 @@ public class Main extends Application {
              sky = canvasManager.canvas();
             Pane ciel = new Pane(sky);
             BorderPane root = new BorderPane();
-            root.setTop(drawControlBar());
+            VBox top = new VBox(drawHelpMenu(),drawControlBar());
+            
+            root.setTop(top);
             root.setCenter(ciel);
             root.setBottom(drawInfos(viewingParametersBean, canvasManager));
-         
+            
+            /////////////////////////////////////////////////
+       
             sky.widthProperty().bind(ciel.widthProperty());
             sky.heightProperty().bind(ciel.heightProperty());
 
@@ -238,11 +254,68 @@ public class Main extends Application {
 
         // creating the whole control bar
 
-        HBox controlBar = new HBox(position, time, animation);
+        HBox controlBar = new HBox(position,new Separator(Orientation.VERTICAL), time, new Separator(Orientation.VERTICAL),animation);
         controlBar.setStyle("-fx-spacing: 4; -fx-padding: 4;");
 
         return controlBar;
 
+    }
+    
+    private  MenuBar drawHelpMenu() {
+        Menu aide = new Menu("aide");
+
+         Menu subMenu = new Menu("Point And View Setup");
+      CustomMenuItem customMenuItem = new CustomMenuItem();
+      ScrollPane setup = new ScrollPane();
+      VBox setupH = new VBox(); 
+      setupH.setSpacing(2);
+      Label l1 = new Label("1.Installez l'application Rigel PAV : "); 
+      l1.setStyle("-fx-font-weight: bold;");
+      
+      Label l11 = new Label("scannez ce QR Code "); 
+      l11.setStyle("-fx-font-weight: normal;"); 
+      
+      Label l2 = new Label ("2.Entrez l'adresse IP de votre PC ainsi que le port  : ");
+      l2.setStyle("-fx-font-weight: bold;"); 
+      Label l21 = new Label("L'adresse IP de votre PC et le port sont indiqués en bas à droite de la fenêtre "); 
+      l21.setStyle("-fx-font-weight: normal");
+      
+      InputStream input = resourceStream("/tuto2.jpg");
+      Image image = new Image(input,389,200,true,true); 
+      ImageView tuto2 = new ImageView(image);
+      HBox imCon = new HBox(tuto2); 
+      imCon.setAlignment(Pos.BASELINE_CENTER);
+      
+      //
+      Label l3 =new Label("3.Checkez synchroniser pour envoyer les données de votre sensor et Coords géo pour envoyer vos coordonnées au PC");
+      l3.setStyle("-fx-font-weight: bold;");
+      Label l31 = new Label("vous devez voir le status basculer de non connecté à connecté dans les deux applications");
+ 
+      Image image2 = new Image(input,389,200,true,true); 
+      ImageView tuto3 = new ImageView(image2);
+      HBox imCon2 = new HBox(tuto3); 
+      imCon2.setAlignment(Pos.BASELINE_CENTER);
+      Label l4 = new Label("4.pointez votre telephone vers le ciel et vous verrez le ciel de l'application mis à jour ");
+      l4.setStyle("-fx-font-weight: bold;");
+      Label notice = new Label("NB: l'application est disponible seulement sur Android , et vous devez avoir l'orientation sensor activé");
+      notice.setStyle("-fx-text-decoration: underline;");
+      
+      setupH.getChildren().addAll(l1,l11,l2,l21,imCon,l3,l31,imCon2,l4,notice); 
+     
+      setup.setContent(setupH);
+    
+      customMenuItem.setContent(setup);
+      
+      customMenuItem.setHideOnClick(false);
+      subMenu.getItems().add(customMenuItem);
+      aide.getItems().add(subMenu); 
+      
+        MenuBar menuBar = new MenuBar(aide);
+
+   
+        
+        
+        return menuBar ; 
     }
 
     private BorderPane drawInfos(ViewingParametersBean vp,
@@ -251,19 +324,35 @@ public class Main extends Application {
         BorderPane infos = new BorderPane();
         infos.setStyle("-fx-padding: 4;-fx-background-color: white;");
 
-        Text gauche = new Text();
-        gauche.textProperty().bind(Bindings.format(Locale.ROOT,
+        Text gauche1 = new Text();
+        gauche1.textProperty().bind(Bindings.format(Locale.ROOT,
                 "Champ de vue : %.1f°", vp.fieldOfViewDegProperty()));
 
         Text center = new Text();
         center.textProperty().bind(sm.objectUnderMouseProperty().asString());
 
-        Text droite = new Text();
-        droite.textProperty()
+        Text gauche2 = new Text();
+        gauche2.textProperty()
                 .bind(Bindings.format(Locale.ROOT,
                         "Azimut : %.2f°, hauteur : %.2f°",
                         sm.mouseAzDegProperty(), sm.mouseAltDegProperty()));
 
+        HBox gauche = new HBox(gauche1,new Separator(Orientation.VERTICAL),gauche2); 
+        gauche.setSpacing(2); 
+        Text droite4 = new Text("statut : ");
+        Text droite1 = new Text("port : " + server.getPort() );
+        Text droite2 = new Text("Adresse IP : " + server.getIp());
+        Text droite3 = new Text(); 
+        droite3.textProperty().bind(Bindings.format(Locale.ROOT, "%s",server.statusProperty()));
+        if(droite3.getText()=="connecté")
+            droite3.setFill(Color.GREEN);
+        else 
+            droite3.setFill(Color.RED);
+        
+        droite3.setStyle("-fx-font-weight: bold;");
+        HBox droite = new HBox(droite1,new Separator(Orientation.VERTICAL),droite2,new Separator(Orientation.VERTICAL),droite4,droite3); 
+        droite.setSpacing(2); 
+        gauche.setSpacing(2);
         infos.setRight(droite);
         infos.setLeft(gauche);
         infos.setCenter(center);

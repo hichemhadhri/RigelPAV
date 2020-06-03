@@ -172,6 +172,13 @@ public class SkyCanvasManager {
 	public ObjectBinding<CelestialObject> objectUnderMouseProperty(){
 		return objectUnderMouse;
 	}
+	
+	/**Object Under mouse getter
+	 * @return objectUnderMouse
+	 */
+	public CelestialObject getObjectUnderMouse() {
+	    return objectUnderMouse.get(); 
+	}
 	/** Getter for the canvas 
 	 * @return canvas
 	 */
@@ -190,6 +197,25 @@ public class SkyCanvasManager {
 	public DoubleBinding mouseAltDegProperty() {
 		return mouseAltDeg;
 	}
+	
+	/**
+     * MouseAzDeg getter
+     * 
+     * @return mouseAzDeg
+     */
+    public double getMouseAzDeg() {
+        return mouseAzDeg.get();
+    }
+
+    /**
+     * MouseAltDeg getter
+     * 
+     * @return mouseAltDeg
+     */
+    public double getMouseAltDeg() {
+        return mouseAltDeg.get();
+    }
+
 
 	private double calculateScale(double width, double fieldOfviewDeg, StereographicProjection projection) {
 		return width / (projection.applyToAngle(Angle.ofDeg(fieldOfviewDeg)));

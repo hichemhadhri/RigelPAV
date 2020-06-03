@@ -18,6 +18,10 @@ import ch.epfl.rigel.math.Angle;
 import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.RightOpenInterval;
 import javafx.application.Platform;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class UDPServer extends Thread {
 	private static final RightOpenInterval azInterval = RightOpenInterval.of(0,360);
@@ -34,13 +38,19 @@ public class UDPServer extends Thread {
     private byte[] buf = new byte[256];
     private double[] lastAzs = new double[10];
     private double[] lastAlts = new double [10];
+    private int port ; 
+    private String ip ; 
+    private StringProperty status; 
+    
  
     public UDPServer(int port, ViewingParametersBean vp, ObserverLocationBean olBean) throws SocketException, UnknownHostException {
     	this.vpBean = vp;
     	this.olBean = olBean;
         socket = new DatagramSocket(port,InetAddress.getLocalHost());
         System.out.println(InetAddress.getLocalHost().getHostAddress());
-
+           this.port=port; 
+           this.ip = InetAddress.getLocalHost().getHostAddress();
+           status = new SimpleStringProperty("non connecté"); 
     }
  
     public void run() {
@@ -63,7 +73,12 @@ public class UDPServer extends Thread {
             DatagramPacket packet 
               = new DatagramPacket(buf, buf.length);
             try {
+                
 				socket.receive(packet);
+				if(packet.getLength()>0)
+				    status.setValue("connecté");
+				else 
+				    status.setValue("non connecté");
 				InetAddress address = packet.getAddress();
 				int port = packet.getPort();
 				packet = new DatagramPacket(buf, buf.length, address, port);
@@ -99,6 +114,18 @@ public class UDPServer extends Thread {
     	}catch (Exception e) {
     		
     	}
+    }
+    
+    public int getPort() {
+        return port; 
+    }
+    
+    public String getIp() {
+        return ip; 
+    }
+    
+    public StringProperty statusProperty() {
+        return this.status; 
     }
     
     private HorizontalCoordinates getRollingMean() {
