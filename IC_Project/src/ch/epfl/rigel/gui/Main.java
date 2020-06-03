@@ -89,7 +89,7 @@ public class Main extends Application {
             viewingParametersBean.setFieldOfViewDeg(100);
             UDPServer server = null;
             try {
-            	server=new UDPServer(2900,viewingParametersBean);
+            	server=new UDPServer(2900,viewingParametersBean,observerLocationBean);
             	server.setDaemon(true);
             	server.start();
             } catch (SocketException e) {
