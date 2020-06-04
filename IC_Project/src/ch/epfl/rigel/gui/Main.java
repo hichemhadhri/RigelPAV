@@ -135,8 +135,10 @@ public class Main extends Application {
             primaryStage.setMinWidth(800);
             primaryStage.setMinHeight(600);
             primaryStage.setTitle("Rigel");
-
-            primaryStage.setScene(new Scene(root));
+     Scene scene =new Scene(root); 
+     
+     scene.getStylesheets().add("/style.css") ;
+            primaryStage.setScene(scene);
             primaryStage.show();
 
             ciel.requestFocus();
@@ -265,7 +267,7 @@ public class Main extends Application {
 
     }
     
-    private  MenuBar drawHelpMenu() {
+    private  MenuBar drawHelpMenu() throws IOException{
       Menu aide = new Menu("Aide");
       
       Menu subMenu = new Menu("Point And View Setup");
@@ -278,7 +280,13 @@ public class Main extends Application {
       
       Label l11 = new Label(" NB: l'application n'est disponible que sur Android , et vous devez avoir le capteur d'orientation et la géolocalisation activés"); 
       l11.setStyle("-fx-font-weight: normal;"); 
-      Label l0 = new Label("2. Assurez vous que le smartphone et l'ordinateur sont connectés sur le même réseau WIFI (Le partage de connexion est aussi possible)");
+     InputStream input = resourceStream("/qrcode.png");
+     Image image = new Image(input,229,217,false,false); 
+     ImageView tuto1 = new ImageView(image);
+     HBox imCon = new HBox(tuto1); 
+     imCon.setAlignment(Pos.BASELINE_CENTER);
+     input.close();
+      Label l0 = new Label("2. Assurez vous que le smartphone et l'ordinateur sont connectés sur le même réseau WIFI \n(Le partage de connexion est aussi possible)");
       l0.setStyle("-fx-font-weight: bold;");
       
       Label l2 = new Label ("3. Entrez l'adresse IP de votre ordinateur ainsi que le port dans la fenêtre de l'application sur smartphone: ");
@@ -286,35 +294,43 @@ public class Main extends Application {
       Label l21 = new Label("L'adresse IP de votre ordinateur et le port sont indiqués en bas à droite de la fenêtre "); 
       l21.setStyle("-fx-font-weight: normal");
       
-      InputStream input = resourceStream("/tuto2.jpg");
-      Image image = new Image(input,389,200,true,true); 
-      ImageView tuto2 = new ImageView(image);
-      HBox imCon = new HBox(tuto2); 
-      imCon.setAlignment(Pos.BASELINE_CENTER);
-      
+       input = resourceStream("/tuto1.png");
+      Image image2 = new Image(input,375,200,false,false); 
+      ImageView tuto2 = new ImageView(image2);
+      HBox imCon1 = new HBox(tuto2); 
+      imCon1.setAlignment(Pos.BASELINE_CENTER);
+      input.close();
      
       Label l3 =new Label("4. Checkez synchroniser pour envoyer les données des capteurs \n Une fois que les données du GPS sont disponibles, vous pouvez cliquer sur Envoyer Géolocalisation pour envoyer vos coordonnées géographiques au PC");
       l3.setStyle("-fx-font-weight: bold;");
       Label l31 = new Label("Vous devriez voir le statut basculer de Non connecté à Connecté dans les deux applications");
- 
-      Image image2 = new Image(input,389,200,true,true); 
-      ImageView tuto3 = new ImageView(image2);
+        
+      input = resourceStream("/tuto2.png");
+      Image image3 = new Image(input,389,200,false,false); 
+      ImageView tuto3 = new ImageView(image3);
       HBox imCon2 = new HBox(tuto3); 
       imCon2.setAlignment(Pos.BASELINE_CENTER);
-
+      input.close(); 
+      
       Label l4 = new Label("5. Dans le menu du Mode de Navigation, sélectionnez le mode Smartphone");
       l4.setStyle("-fx-font-weight: bold;");
       
       Label l5 = new Label("6. Pointez votre smartphone vers le ciel et vous devriez voir le ciel du programme se mettre à jour en temps réel");
       l5.setStyle("-fx-font-weight: bold;");
-      setupH.getChildren().addAll(l1,l11,l0,l2,imCon,l21,l3,l31,imCon2,l4,l5); 
-     
+      setupH.getChildren().addAll(l1,l11,imCon,l0,l2,imCon1,l21,l3,l31,imCon2,l4,l5); 
+     setupH.setPrefHeight(400);
+     setupH.setPrefWidth(700);
+     setupH.getStyleClass().add("custom-menu");
       setup.setContent(setupH);
-    
+       setup.setPrefHeight(400);
+       setup.setPrefWidth(700);
+       setup.getStyleClass().add("custom-menu");
       customMenuItem.setContent(setup);
-      customMenuItem.setStyle("-fx-focus-color: transparent;");
+      customMenuItem.getStyleClass().add("custom-menu");
       customMenuItem.setHideOnClick(false);
+      
       subMenu.getItems().add(customMenuItem);
+      
       aide.getItems().add(subMenu); 
       
       Menu navig = new Menu("Mode de Navigation"); 
