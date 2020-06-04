@@ -4,10 +4,11 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
-
+import java.util.Enumeration;
 
 import ch.epfl.rigel.coordinates.GeographicCoordinates;
 import ch.epfl.rigel.coordinates.HorizontalCoordinates;
@@ -54,9 +55,14 @@ public class UDPServer extends Thread {
     public UDPServer(int port, ViewingParametersBean vp, ObserverLocationBean ol) throws SocketException, UnknownHostException {
     	this.vpBean = vp;
     	this.olBean = ol;
-        socket = new DatagramSocket(port,InetAddress.getLocalHost());
-        this.port=port; 
-        this.ip = InetAddress.getLocalHost().getHostAddress();
+    	try(final DatagramSocket socket1 = new DatagramSocket()){
+    	    socket1.connect(InetAddress.getByName("8.8.8.8"), 10002);
+    	    this.ip = socket1.getLocalAddress().getHostAddress();
+    	    this.port=port; 
+    	    socket = new DatagramSocket(port,socket1.getLocalAddress());
+    	  }
+
+        
         status = new SimpleStringProperty("Non connecté"); 
         socket.setSoTimeout(1000);
         color = new SimpleObjectProperty<Color>(Color.RED);

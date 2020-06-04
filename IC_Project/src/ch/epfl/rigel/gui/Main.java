@@ -105,7 +105,7 @@ public class Main extends Application {
             viewingParametersBean.setFieldOfViewDeg(100);
           
             try {
-            	server=new UDPServer(2900,viewingParametersBean,observerLocationBean);
+            	server=new UDPServer(3000,viewingParametersBean,observerLocationBean);
             	server.setDaemon(true);
             	server.start();
             } catch (SocketException e) {
