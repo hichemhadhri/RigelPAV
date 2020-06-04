@@ -14,7 +14,7 @@ import ch.epfl.rigel.coordinates.HorizontalCoordinates;
 import ch.epfl.rigel.gui.ObserverLocationBean;
 import ch.epfl.rigel.gui.ViewingParametersBean;
 import ch.epfl.rigel.math.Angle;
-
+import ch.epfl.rigel.math.ClosedInterval;
 import ch.epfl.rigel.math.RightOpenInterval;
 import javafx.application.Platform;
 import javafx.beans.property.ObjectProperty;
@@ -30,20 +30,19 @@ import javafx.scene.paint.Color;
  *
  */
 public class UDPServer extends Thread {
-	private static final RightOpenInterval azInterval = RightOpenInterval.of(0,360);
-	private static final RightOpenInterval altInterval = RightOpenInterval.of(-90,90);
+	private static final RightOpenInterval AZINTERVAL = RightOpenInterval.of(0,360);
+	private static final ClosedInterval ALTINTERVAL = ClosedInterval.of(-90,90);
+	private static final int SMOOTHINGFACTOR = 10;
 	private final ViewingParametersBean vpBean;
 	private final ObserverLocationBean olBean;
-	private HorizontalCoordinates center;
-	private double az;
-	private double alt;
-	private double lon;
-	private double lat;
+	private final Runnable updateVp;
+	private final Runnable updateOl;
+	private HorizontalCoordinates vpCenter;
+	private GeographicCoordinates olCenter;
     private DatagramSocket socket;
     private boolean running;
-    private byte[] buf = new byte[256];
-    private double[] lastAzs = new double[10];
-    private double[] lastAlts = new double [10];
+    private double[] lastAzs = new double[SMOOTHINGFACTOR];
+    private double[] lastAlts = new double [SMOOTHINGFACTOR];
     private int port ; 
     private String ip ; 
     private StringProperty status; 
@@ -52,90 +51,87 @@ public class UDPServer extends Thread {
     
    
  
-    public UDPServer(int port, ViewingParametersBean vp, ObserverLocationBean olBean) throws SocketException, UnknownHostException {
+    public UDPServer(int port, ViewingParametersBean vp, ObserverLocationBean ol) throws SocketException, UnknownHostException {
     	this.vpBean = vp;
-    	this.olBean = olBean;
+    	this.olBean = ol;
         socket = new DatagramSocket(port,InetAddress.getLocalHost());
-        System.out.println(InetAddress.getLocalHost().getHostAddress());
-           this.port=port; 
-           this.ip = InetAddress.getLocalHost().getHostAddress();
-           status = new SimpleStringProperty("non connecté"); 
-           socket.setSoTimeout(1000);
-           color = new SimpleObjectProperty<Color>(Color.RED);
-           this.mode = new SimpleBooleanProperty(false); 
+        this.port=port; 
+        this.ip = InetAddress.getLocalHost().getHostAddress();
+        status = new SimpleStringProperty("Non connecté"); 
+        socket.setSoTimeout(1000);
+        color = new SimpleObjectProperty<Color>(Color.RED);
+        this.mode = new SimpleBooleanProperty(false); 
+        updateVp = new Runnable() {
+
+            @Override
+            public void run() {
+                vpBean.setCenter(vpCenter);
+            }
+        };
+        updateOl = new Runnable() {
+
+            @Override
+            public void run() {
+                olBean.setCoordinates(olCenter);
+            }
+        };
+        
     }
  
     public void run() {
         running = true;
-        Runnable updateVp = new Runnable() {
-
-            @Override
-            public void run() {
-                vpBean.setCenter(center);
-            }
-        };
-        Runnable updateOl = new Runnable() {
-
-            @Override
-            public void run() {
-                System.out.println("new geo");
-                olBean.setCoordinates(GeographicCoordinates.ofDeg(lon, lat));
-            }
-        };
-        
+        byte[] buf = new byte[256];
         while (running) {
             DatagramPacket  packet   = new DatagramPacket(buf, buf.length);
-            try {
-                
                 //if no data received change status to "disconnected"
                 try {
 				socket.receive(packet);
                 }catch(SocketTimeoutException e) {
-                   status.setValue("non connecté");
+                   status.setValue("Non connecté");
                    color.setValue(Color.RED);
                    continue; 
+                }catch(IOException e) {
+                	continue;
                 }
 				//data received
-				    status.setValue("connecté");
-				    color.setValue(Color.GREEN);
-				    InetAddress address = packet.getAddress();
-	                int port = packet.getPort();
+                status.setValue("Connecté");
+                color.setValue(Color.GREEN);
+                InetAddress address = packet.getAddress();
+                int port = packet.getPort();
 				packet = new DatagramPacket(buf, buf.length, address, port);
 				
-				String received 
-	              = new String(packet.getData(), 0, packet.getLength());
+				String received = new String(packet.getData(), 0, packet.getLength());
 				
-				updateData(received,updateVp,updateOl); // process received data
-				socket.send(packet);
-				
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+				updateData(received); // process received data
+				try {
+					socket.send(packet);
+				}catch(IOException e) {
+					continue;
+				}
+
         }
         socket.close();
     }
-    private void updateData(String received, Runnable updateVp, Runnable updateOl) {
-    	try {
-    	    //process incoming geographic coordinates datas
-    		String[] data = received.split(" ");
-    		if (received.contains("geo")) {
-    			this.lon = Double.parseDouble(data[1]);
-    			this.lat = Double.parseDouble(data[2]);
-    			Platform.runLater(updateOl);
-    			
-    		//process incoming azimuth and altitude datas	
-    		}else if (received.contains("vp")) {
-    		    if(mode.get()) {
-    			this.az= Double.parseDouble(data[1])+90;
-    			this.alt= Double.parseDouble(data[2])-90;
-    			this.center = getRollingMean();    			
-    			Platform.runLater(updateVp); //update center in UI
-    		    }
-    		}
-    	}catch (Exception e) {
-    		
-    	}
+    private void updateData(String received) {
+    	
+	    //process incoming geographic coordinates datas
+		String[] data = received.split(" ");
+		if (received.contains("geo")) {
+			double lonDeg = Double.parseDouble(data[1]);
+			double latDeg = Double.parseDouble(data[2]);
+			this.olCenter = GeographicCoordinates.ofDeg(lonDeg, latDeg);
+			Platform.runLater(updateOl);
+			
+		//process incoming azimuth and altitude datas	
+		}else if (received.contains("vp")) {
+		    if(mode.get()) {
+			double az= Double.parseDouble(data[1])+90;
+			double alt= Double.parseDouble(data[2])+90;
+			this.vpCenter = getRollingMean(az, alt);    			
+			Platform.runLater(updateVp); //update center in UI
+		    }
+		}
+    	
     }
     
     /**port getter
@@ -148,7 +144,7 @@ public class UDPServer extends Thread {
     /**Ip adress getter
      * @return Ip
      */
-    public String getIp() {
+    public String getIP() {
         return ip; 
     }
     
@@ -172,30 +168,34 @@ public class UDPServer extends Thread {
        
         return this.mode;
     }
-    /**Calculates the rolling mean of the last 10 received az and alt to create smooth animation and removes shaky screen effect 
+    /**Calculates the rolling mean of the last number SMOOTHINGFACTOR received az and alt to create smooth animation and removes shaky screen effect 
      * @return calculated new coordinates
      */
-    private HorizontalCoordinates getRollingMean() {
+    private HorizontalCoordinates getRollingMean(double az, double alt) {
     	double[] azs = new double[lastAzs.length];
     	double[] alts = new double[lastAlts.length];
     	double azMean=0;
     	double azSumSin=0;
     	double azSumCos=0;
     	double altMean=0;
+    	//Shifting the arrays
     	System.arraycopy(lastAzs, 1, azs, 0, lastAzs.length-1);
-    	azs[lastAzs.length-1] = this.az;
+    	azs[lastAzs.length-1] = az;
     	System.arraycopy(lastAlts, 1, alts, 0, lastAlts.length-1);
-    	alts[lastAlts.length-1] = altInterval.reduce(this.alt);
+    	alts[lastAlts.length-1] = ALTINTERVAL.clip(alt);
     	lastAzs=azs;
     	lastAlts=alts;
+    	
+    	//Calculating mean
     	for(int i=0;i<lastAzs.length;++i ) {
+    		//Circular mean for azimuth
     		azSumSin += Math.sin(Angle.ofDeg(lastAzs[i]))/lastAzs.length;
     		azSumCos += Math.cos(Angle.ofDeg(lastAzs[i]))/lastAzs.length;
-    		
+    		//Regular mean for altitude
     		altMean += lastAlts[i]/lastAlts.length;
     	}
     	azMean = Angle.toDeg(Math.atan2(azSumSin, azSumCos));
-    	return HorizontalCoordinates.ofDeg(azInterval.reduce(azMean), altInterval.reduce(altMean));
+    	return HorizontalCoordinates.ofDeg(AZINTERVAL.reduce(azMean), ALTINTERVAL.clip(altMean));
     }
 
     

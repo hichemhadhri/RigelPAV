@@ -266,25 +266,24 @@ public class Main extends Application {
     }
     
     private  MenuBar drawHelpMenu() {
-        Menu aide = new Menu("aide");
-
-         Menu subMenu = new Menu("Point And View Setup");
+      Menu aide = new Menu("Aide");
+      
+      Menu subMenu = new Menu("Point And View Setup");
       CustomMenuItem customMenuItem = new CustomMenuItem();
       ScrollPane setup = new ScrollPane();
       VBox setupH = new VBox(); 
       setupH.setSpacing(2);
-      Label l1 = new Label("1.Installez l'application Rigel PAV : "); 
+      Label l1 = new Label("1. Installez l'application Rigel PAV en Scannant ce QR code: "); 
       l1.setStyle("-fx-font-weight: bold;");
       
-      Label l11 = new Label("scannez ce QR Code "); 
+      Label l11 = new Label(" NB: l'application n'est disponible que sur Android , et vous devez avoir le capteur d'orientation et la géolocalisation activés"); 
       l11.setStyle("-fx-font-weight: normal;"); 
-      Label l0 = new Label("2.basculez le mode de navigation vers téléphone");
+      Label l0 = new Label("2. Assurez vous que le smartphone et l'ordinateur sont connectés sur le même réseau WIFI (Le partage de connexion est aussi possible)");
       l0.setStyle("-fx-font-weight: bold;");
-      Label l01 = new Label("valeur par défaut est le clavier ");
       
-      Label l2 = new Label ("2.Entrez l'adresse IP de votre PC ainsi que le port  : ");
+      Label l2 = new Label ("3. Entrez l'adresse IP de votre ordinateur ainsi que le port dans la fenêtre de l'application sur smartphone: ");
       l2.setStyle("-fx-font-weight: bold;"); 
-      Label l21 = new Label("L'adresse IP de votre PC et le port sont indiqués en bas à droite de la fenêtre "); 
+      Label l21 = new Label("L'adresse IP de votre ordinateur et le port sont indiqués en bas à droite de la fenêtre "); 
       l21.setStyle("-fx-font-weight: normal");
       
       InputStream input = resourceStream("/tuto2.jpg");
@@ -294,20 +293,21 @@ public class Main extends Application {
       imCon.setAlignment(Pos.BASELINE_CENTER);
       
      
-      Label l3 =new Label("3.Checkez synchroniser pour envoyer les données de votre sensor et Coords géo pour envoyer vos coordonnées au PC");
+      Label l3 =new Label("4. Checkez synchroniser pour envoyer les données des capteurs \n Une fois que les données du GPS sont disponibles, vous pouvez cliquer sur Envoyer Géolocalisation pour envoyer vos coordonnées géographiques au PC");
       l3.setStyle("-fx-font-weight: bold;");
-      Label l31 = new Label("vous devez voir le status basculer de non connecté à connecté dans les deux applications");
+      Label l31 = new Label("Vous devriez voir le statut basculer de Non connecté à Connecté dans les deux applications");
  
       Image image2 = new Image(input,389,200,true,true); 
       ImageView tuto3 = new ImageView(image2);
       HBox imCon2 = new HBox(tuto3); 
       imCon2.setAlignment(Pos.BASELINE_CENTER);
-      Label l4 = new Label("4.pointez votre telephone vers le ciel et vous verrez le ciel de l'application mis à jour ");
+
+      Label l4 = new Label("5. Dans le menu du Mode de Navigation, sélectionnez le mode Smartphone");
       l4.setStyle("-fx-font-weight: bold;");
-      Label notice = new Label("NB: l'application est disponible seulement sur Android , et vous devez avoir l'orientation sensor activé");
-      notice.setStyle("-fx-text-decoration: underline;");
       
-      setupH.getChildren().addAll(l1,l11,l0,l01,l2,l21,imCon,l3,l31,imCon2,l4,notice); 
+      Label l5 = new Label("6. Pointez votre smartphone vers le ciel et vous devriez voir le ciel du programme se mettre à jour en temps réel");
+      l5.setStyle("-fx-font-weight: bold;");
+      setupH.getChildren().addAll(l1,l11,l0,l2,imCon,l21,l3,l31,imCon2,l4,l5); 
      
       setup.setContent(setupH);
     
@@ -317,14 +317,14 @@ public class Main extends Application {
       subMenu.getItems().add(customMenuItem);
       aide.getItems().add(subMenu); 
       
-      Menu navig = new Menu("mode de navigation"); 
+      Menu navig = new Menu("Mode de Navigation"); 
       CustomMenuItem navigItem = new CustomMenuItem();
-      RadioButton clavier= new RadioButton("clavier");
+      RadioButton clavier= new RadioButton("Clavier");
       clavier.setTextFill(Color.BLACK);
     
      
       clavier.setStyle("-fx-focus-color: transparent;");
-      RadioButton telephone = new RadioButton("téléphone"); 
+      RadioButton telephone = new RadioButton("Smartphone"); 
       telephone.setTextFill(Color.BLACK);
       telephone.setStyle("-fx-focus-color: transparent;");
       ToggleGroup tg = new ToggleGroup(); 
@@ -375,12 +375,13 @@ public class Main extends Application {
 
         HBox gauche = new HBox(gauche1,new Separator(Orientation.VERTICAL),gauche2); 
         gauche.setSpacing(2); 
-        Text droite4 = new Text("statut : ");
-        Text droite1 = new Text("port : " + server.getPort() );
-        Text droite2 = new Text("Adresse IP : " + server.getIp());
-        Text droite3 = new Text(); 
+        Text droite4 = new Text("Statut : ");
+        Text droite1 = new Text("Port : " + server.getPort() );
+        Text droite2 = new Text("Adresse IP : " + server.getIP());
+        Text droite3 = new Text();
+        
         droite3.textProperty().bind(Bindings.format(Locale.ROOT, "%s",server.statusProperty()));
-      droite3.fillProperty().bind(server.colorProperty());
+        droite3.fillProperty().bind(server.colorProperty());
         
         droite3.setStyle("-fx-font-weight: bold;");
         HBox droite = new HBox(droite1,new Separator(Orientation.VERTICAL),droite2,new Separator(Orientation.VERTICAL),droite4,droite3); 
